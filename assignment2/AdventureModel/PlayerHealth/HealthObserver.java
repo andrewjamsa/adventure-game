@@ -16,13 +16,11 @@ public class HealthObserver implements Observer {
         this.subject = subject;
 
         // register as an observer
-        this.subject.register(this);
+        if (!this.subject.register(this)) {
+            throw new IllegalArgumentException("Could not register as an observer.");
+        }
     }
 
-    @Override
-    public void update() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
 
     /**
      * This method returns the health value of the player.
@@ -30,7 +28,7 @@ public class HealthObserver implements Observer {
      * @return the health value of the player
      */
     public Integer getHealth() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return this.health;
     }
 
     /**
@@ -39,8 +37,12 @@ public class HealthObserver implements Observer {
      * @return true if the player is alive, false otherwise
      */
     public boolean isAlive() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return this.getHealth() > 0;
     }
 
 
+    @Override
+    public void update(Integer value) {
+        this.health = value;
+    }
 }

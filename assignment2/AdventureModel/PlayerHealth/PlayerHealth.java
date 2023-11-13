@@ -1,21 +1,34 @@
 package AdventureModel.PlayerHealth;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PlayerHealth extends HealthObservable {
 
-    private Observer[] observers;
+    /**
+     * The list of observers.
+     */
+    private List<Observer> observers;
 
-    @Override
-    public void register(HealthObserver observer) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public PlayerHealth(Integer health) {
+        this.observers = new ArrayList<>(); // initialize the list of observers
+        this.setObservableHealth(health); // set the health value
     }
 
     @Override
-    public void unregister(HealthObserver observer) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public boolean register(HealthObserver observer) {
+        return this.observers.add(observer);
+    }
+
+    @Override
+    public boolean unregister(HealthObserver observer) {
+        return this.observers.remove(observer);
     }
 
     @Override
     public void notifyObservers() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        for (Observer observer : this.observers) {
+            observer.update(this.getObservableHealth());
+        }
     }
 }

@@ -21,16 +21,17 @@ public class Player implements Serializable {
     public ArrayList<AdventureObject> inventory;
 
     /**
-     *
+     * The health of the player.
      */
     public PlayerHealth health;
 
     /**
      * Adventure Game Player Constructor
      */
-    public Player(Room currentRoom) {
+    public Player(Room currentRoom, Integer defaultHealth) {
         this.inventory = new ArrayList<AdventureObject>();
         this.currentRoom = currentRoom;
+        this.health = new PlayerHealth(defaultHealth);
     }
 
     /**
@@ -125,5 +126,49 @@ public class Player implements Serializable {
         return objects;
     }
 
+    /**
+     * This method returns whether the player is alive or not.
+     *
+     * @return true if the player is alive, false otherwise
+     */
+    private boolean isAlive() {
+        return this.health.getObservableHealth() > 0;
+    }
+
+    /**
+     * This method sets the health value of the player.
+     *
+     * @param health the health value of the player
+     */
+    public void setHealth(Integer health) {
+        this.health.setObservableHealth(health);
+    }
+
+    /**
+     * This method removes health from the player.
+     *
+     * @param health the amount of health to remove
+     */
+    public void removeHealth(Integer health) {
+        this.setHealth(this.health.getObservableHealth() - health);
+    }
+
+    /**
+     * This method adds health to the player.
+     *
+     * @param health the amount of health to add
+     */
+    public void addHealth(Integer health) {
+        this.setHealth(this.health.getObservableHealth() + health);
+    }
+
+    /**
+     * This method returns the health value of the player.
+     *
+     * @return the health value of the player
+     */
+    public Integer getHealth() {
+        return this.health.getObservableHealth();
+    }
 
 }

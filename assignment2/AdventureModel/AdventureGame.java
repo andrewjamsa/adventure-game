@@ -60,7 +60,7 @@ public class AdventureGame implements Serializable {
         loader.loadGame();
 
         // set up the player's current location
-        this.player = new Player(this.rooms.get(1));
+        this.player = new Player(this.rooms.get(1), 100); // TODO change defaultHealth based on difficulty
     }
 
     /**
