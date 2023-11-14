@@ -118,5 +118,13 @@ public class Player implements Serializable {
         return objects;
     }
 
-
+    /**
+     * Does the effect of all the objects in player's inventory.
+     */
+    public void doAllObjectEffect(){
+        // Copies to modifying inventory in an effect doesnt cause error
+        for (AdventureObject object: new ArrayList<AdventureObject>(inventory)) {
+            object.doEffect(this);
+        }
+    }
 }

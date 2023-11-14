@@ -25,6 +25,11 @@ public class AdventureObject implements Serializable {
     private Room location = null;
 
     /**
+     * The effect that is done to the player holding the object upon entering a new room
+     */
+    private EffectStrategy effect;
+
+    /**
      * Adventure Object Constructor
      * ___________________________
      * This constructor sets the name, description, and location of the object.
@@ -66,6 +71,24 @@ public class AdventureObject implements Serializable {
      */
     public Room getLocation(){
         return this.location;
+    }
+
+    /**
+     * Sets the effect of the object
+     */
+    public void setEffect(EffectStrategy effect) {
+        this.effect = effect;
+    }
+
+    /**
+     * Do the effect of the object
+     * Does nothing if effect is not set
+     */
+    public void doEffect(Player player){
+        if(effect == null){
+            return;
+        }
+        this.effect.doEffect(player);
     }
 
 }

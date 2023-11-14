@@ -41,6 +41,11 @@ public class Room implements Serializable {
     private boolean isVisited;
 
     /**
+     * Effect to be applied to player upon entering room
+     */
+    private EffectStrategy effect;
+
+    /**
      * AdvGameRoom constructor.
      *
      * @param roomName: The name of the room.
@@ -193,5 +198,22 @@ public class Room implements Serializable {
         return this.motionTable;
     }
 
+    /**
+     * Sets the effect of the room
+     */
+    public void setEffect(EffectStrategy effect) {
+        this.effect = effect;
+    }
+
+    /**
+     * Do the effect of the room
+     * Does nothing if effect is not set
+     */
+    public void doEffect(Player player){
+        if(effect == null){
+            return;
+        }
+        this.effect.doEffect(player);
+    }
 
 }
