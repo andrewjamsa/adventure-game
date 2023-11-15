@@ -165,7 +165,13 @@ public class Room implements Serializable {
      * @return: description of the room
      */
     public String getRoomDescription(){
-        return this.roomDescription.replace("\n", " ");
+        if (effect == null){
+            return this.roomDescription.replace("\n", " ");
+        }
+        else{
+            return String.format("%s Effect: %s", this.roomDescription.replace("\n", " "),
+                    this.effect.getDescription());
+        }
     }
 
 

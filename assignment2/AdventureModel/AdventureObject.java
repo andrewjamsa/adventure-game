@@ -59,7 +59,12 @@ public class AdventureObject implements Serializable {
      * @return description of the game
      */
     public String getDescription(){
-        return this.description;
+        if (effect == null){
+            return this.description;
+        }
+        else{
+            return String.format("%s Effect: %s", this.description, this.effect.getDescription());
+        }
     }
 
     /**
