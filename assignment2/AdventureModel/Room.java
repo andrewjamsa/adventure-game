@@ -1,5 +1,7 @@
 package AdventureModel;
 
+import AdventureModel.Effects.EffectStrategy;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 

@@ -1,4 +1,6 @@
-package AdventureModel;
+package AdventureModel.Effects;
+
+import AdventureModel.Player;
 
 public interface EffectStrategy {
     /**
@@ -11,7 +13,7 @@ public interface EffectStrategy {
     /**
      * Gets the description of the effect.
      *
-     * @return
+     * @return A string of the description of the effect.
      */
     String getDescription();
 }
