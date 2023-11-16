@@ -1,12 +1,16 @@
 package AdventureModel.Effects;
 
-public abstract class HideableEffect implements EffectStrategy{
+import AdventureModel.Player;
+
+public class HideableEffect implements EffectStrategy{
     private boolean hide = true;
+    private EffectStrategy effect;
+    public HideableEffect(EffectStrategy effect){
+        this.effect = effect;
+    }
     public void setHide(boolean hide){
         this.hide=hide;
     }
-
-    abstract protected String realDescription();
 
     @Override
     public String getDescription(){
@@ -14,7 +18,12 @@ public abstract class HideableEffect implements EffectStrategy{
             return "???";
         }
         else {
-            return realDescription();
+            return effect.getDescription();
         }
+    }
+
+    @Override
+    public void doEffect(Player player){
+        effect.doEffect(player);
     }
 }
