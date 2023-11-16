@@ -49,6 +49,8 @@ public abstract class HealthObservable {
         } else {
             this.observableHealth = health;
         }
+
+        this.notifyObservers();
     }
 
 }
