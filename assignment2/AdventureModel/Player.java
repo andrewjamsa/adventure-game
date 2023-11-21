@@ -28,10 +28,10 @@ public class Player implements Serializable {
     /**
      * Adventure Game Player Constructor
      */
-    public Player(Room currentRoom, Integer defaultHealth) {
+    public Player(Room currentRoom, Integer defaultHealth, Integer maxHealth) {
         this.inventory = new ArrayList<AdventureObject>();
         this.currentRoom = currentRoom;
-        this.health = new PlayerHealth(defaultHealth);
+        this.health = new PlayerHealth(defaultHealth, maxHealth);
     }
 
     /**
@@ -167,7 +167,7 @@ public class Player implements Serializable {
      *
      * @return the health value of the player
      */
-    public Integer getHealth() {
+    public Integer getHealthValue() {
         return this.health.getObservableHealth();
     }
 

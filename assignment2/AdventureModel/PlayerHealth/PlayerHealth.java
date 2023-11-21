@@ -10,8 +10,9 @@ public class PlayerHealth extends HealthObservable {
      */
     private List<Observer> observers;
 
-    public PlayerHealth(Integer health) {
+    public PlayerHealth(Integer health, Integer maxHealth) {
         this.observers = new ArrayList<>(); // initialize the list of observers
+        this.setMaxHealth(maxHealth); // set the max health value
         this.setObservableHealth(health); // set the health value
     }
 
