@@ -16,8 +16,9 @@ public class PlayerHealth extends HealthObservable {
     }
 
     @Override
-    public boolean register(HealthObserver observer) {
-        return this.observers.add(observer);
+    public void register(HealthObserver observer) {
+        this.observers.add(observer);
+        this.notifyObservers();
     }
 
     @Override

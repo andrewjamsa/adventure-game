@@ -11,9 +11,8 @@ public abstract class HealthObservable {
      * This method registers an observer.
      *
      * @param observer the observer to be registered
-     * @return true if the observer was registered, false otherwise
      */
-    public abstract boolean register(HealthObserver observer);
+    public abstract void register(HealthObserver observer);
 
     /**
      * This method unregisters an observer.

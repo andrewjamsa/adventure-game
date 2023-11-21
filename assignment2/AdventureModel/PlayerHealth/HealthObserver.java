@@ -12,15 +12,12 @@ public class HealthObserver implements Observer {
      */
     private HealthObservable subject;
 
-    public void HealthObservable(HealthObservable subject) {
+    public HealthObserver(HealthObservable subject) {
         this.subject = subject;
 
         // register as an observer
-        if (!this.subject.register(this)) {
-            throw new IllegalArgumentException("Could not register as an observer.");
-        }
+        this.subject.register(this);
     }
-
 
     /**
      * This method returns the health value of the player.
