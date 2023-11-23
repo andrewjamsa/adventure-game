@@ -127,7 +127,16 @@ public class Player implements Serializable {
     }
 
     /**
-     * This method returns whether the player is alive or not.
+     * Does the effect of all the objects in player's inventory.
+     */
+    public void doAllObjectEffect(){
+        // Copies to modifying inventory in an effect doesnt cause error
+        for (AdventureObject object: new ArrayList<AdventureObject>(inventory)) {
+            object.doEffect(this);
+        }
+    }
+
+    /** This method returns whether the player is alive or not.
      *
      * @return true if the player is alive, false otherwise
      */

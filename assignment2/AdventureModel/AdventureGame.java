@@ -133,6 +133,8 @@ public class AdventureGame implements Serializable {
         int roomNumber = chosen.getDestinationRoom();
         Room room = this.rooms.get(roomNumber);
         this.player.setCurrentRoom(room);
+        room.doEffect(player);
+        player.doAllObjectEffect(); //Do both room effect and objects effects
 
         return !this.player.getCurrentRoom().getMotionTable().getDirection().get(0).getDirection().equals("FORCED");
     }
