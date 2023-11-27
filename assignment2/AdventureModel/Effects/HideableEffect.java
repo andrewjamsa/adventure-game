@@ -21,7 +21,6 @@ public class HideableEffect implements EffectStrategy{
             return effect.getDescription();
         }
     }
-
     @Override
     public void doEffect(Player player){
         effect.doEffect(player);
