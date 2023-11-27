@@ -28,7 +28,6 @@ public class MultipleEffects implements EffectDecorators{
         return effects.stream().map(EffectStrategy::getDescription).collect(Collectors.joining(", "));
     }
 
-
     @Override
     public void applyFunction(Function<EffectStrategy, NullType> function) {
         for (EffectStrategy effect:effects){
