@@ -28,7 +28,6 @@ public class MultipleEffects implements EffectDecorators{
     public String getDescription() {
         return effects.stream().map(EffectStrategy::getDescription).collect(Collectors.joining(", "));
     }
-
     @Override
     public void applyFunction(Consumer<EffectStrategy> function) {
         for (EffectStrategy effect:effects){
@@ -38,4 +37,5 @@ public class MultipleEffects implements EffectDecorators{
             }
         }
     }
+
 }
