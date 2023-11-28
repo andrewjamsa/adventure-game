@@ -27,7 +27,6 @@ class WeightedRandom<E>{
 }
 
 public class RandomEffect implements EffectDecorators{
-
     WeightedRandom<EffectStrategy> weightedRandom;
     EffectStrategy now;
 
@@ -54,6 +53,7 @@ public class RandomEffect implements EffectDecorators{
     public String getDescription() {
         return String.format("Random assortment of effects. Current effect: %s", now.getDescription());
     }
+
     @Override
     public void applyFunction(Function<EffectStrategy, NullType> function) {
         for (EffectStrategy effect:weightedRandom.map.values()){
@@ -63,5 +63,4 @@ public class RandomEffect implements EffectDecorators{
             }
         }
     }
-
 }
