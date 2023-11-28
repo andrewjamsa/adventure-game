@@ -54,8 +54,6 @@ public class RandomEffect implements EffectDecorators{
     public String getDescription() {
         return String.format("Random assortment of effects. Current effect: %s", now.getDescription());
     }
-<<<<<<< HEAD
-
     @Override
     public void applyFunction(Function<EffectStrategy, NullType> function) {
         for (EffectStrategy effect:weightedRandom.map.values()){
@@ -65,6 +63,5 @@ public class RandomEffect implements EffectDecorators{
             }
         }
     }
-=======
->>>>>>> 953272c (Added multiple effects and random effects decorator.)
+
 }
