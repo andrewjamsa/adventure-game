@@ -2,10 +2,12 @@ package AdventureModel.Effects;
 
 import AdventureModel.Player;
 
+import javax.lang.model.type.NullType;
 import java.util.*;
+import java.util.function.Function;
 
 class WeightedRandom<E>{
-    private final NavigableMap<Double, E> map = new TreeMap<>();
+    public final NavigableMap<Double, E> map = new TreeMap<>();
     private final Random random;
     private double total;
     public WeightedRandom(){
@@ -24,7 +26,7 @@ class WeightedRandom<E>{
     }
 }
 
-public class RandomEffect implements EffectStrategy{
+public class RandomEffect implements EffectDecorators{
     WeightedRandom<EffectStrategy> weightedRandom;
     EffectStrategy now;
 
@@ -50,5 +52,15 @@ public class RandomEffect implements EffectStrategy{
     @Override
     public String getDescription() {
         return String.format("Random assortment of effects. Current effect: %s", now.getDescription());
+    }
+
+    @Override
+    public void applyFunction(Function<EffectStrategy, NullType> function) {
+        for (EffectStrategy effect:weightedRandom.map.values()){
+            function.apply(effect);
+            if (effect instanceof EffectDecorators){
+                ((EffectDecorators) effect).applyFunction(function);
+            }
+        }
     }
 }
