@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import AdventureModel.AdventureGame;
 import AdventureModel.AdventureObject;
+import AdventureModel.Effects.DamageEffect;
 import AdventureModel.Effects.EffectStrategy;
 import AdventureModel.Effects.HideableEffect;
 import AdventureModel.Effects.MultipleEffects;
@@ -77,5 +78,17 @@ public class EffectsTest {
         assertEquals("???", hideEffect.getDescription());
         hideEffect.setHide(false);
         assertEquals("TestDescEffectStrategy", hideEffect.getDescription());
+    }
+
+    /*
+    Testing the DamageEffect class
+     */
+    @Test
+    void damageEffectsTest(){
+        Player player = new Player(new Room("test", 1, "testroomdesc", "testname"), 20, 100);
+        EffectStrategy hideEffect = new DamageEffect(-5);
+        hideEffect.doEffect(player);
+        assertEquals(15, player.getHealthValue());
+        assertEquals("Damages you 5 health everytime you move.", hideEffect.getDescription());
     }
 }
