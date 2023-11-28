@@ -27,6 +27,7 @@ public class DamageEffect implements EffectStrategy{
         }
         else {
             return "Does nothing";
+
         }
     }
 }
