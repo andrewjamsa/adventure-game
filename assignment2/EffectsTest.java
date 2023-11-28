@@ -1,5 +1,15 @@
 import AdventureModel.AdventureObject;
 import AdventureModel.Effects.*;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import AdventureModel.AdventureGame;
+import AdventureModel.AdventureObject;
+import AdventureModel.Effects.EffectStrategy;
+import AdventureModel.Effects.HideableEffect;
+import AdventureModel.Effects.MultipleEffects;
 import AdventureModel.Player;
 import AdventureModel.Room;
 import org.junit.jupiter.api.Test;
@@ -33,6 +43,7 @@ class EffectStrategyMock implements EffectStrategy{
 
 public class EffectsTest {
     /*
+<<<<<<< HEAD
     Testing the factory
      */
     @Test
@@ -52,6 +63,8 @@ public class EffectsTest {
     }
 
     /*
+=======
+>>>>>>> 23ea7f2 (added tests for effect decorators)
     Testing the EffectStrategyMock class
      */
     @Test
@@ -91,7 +104,6 @@ public class EffectsTest {
         hideEffect.setHide(false);
         assertEquals("TestDescEffectStrategy", hideEffect.getDescription());
     }
-
     /*
     Testing the DamageEffect class
      */
