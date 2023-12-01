@@ -1,5 +1,8 @@
 package AdventureModel;
 
+import AdventureModel.Effects.EffectFactory;
+import AdventureModel.Effects.EffectStrategy;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -53,6 +56,8 @@ public class AdventureLoader {
             // now need to get room name
             String roomName = buff.readLine();
 
+            EffectStrategy effectStrategy = EffectFactory.generateEffect(buff.readLine());
+
             // now we need to get the description
             String roomDescription = "";
             String line = buff.readLine();
@@ -64,6 +69,7 @@ public class AdventureLoader {
 
             // now we make the room object
             Room room = new Room(roomName, roomNumber, roomDescription, adventureName);
+            room.setEffect(effectStrategy);
 
             // now we make the motion table
             line = buff.readLine(); // reads the line after "-----"
@@ -98,17 +104,25 @@ public class AdventureLoader {
 
         while (buff.ready()) {
             String objectName = buff.readLine();
+            EffectStrategy effectStrategy = EffectFactory.generateEffect(buff.readLine());
             String objectDescription = buff.readLine();
             String objectLocation = buff.readLine();
             String separator = buff.readLine();
             if (separator != null && !separator.isEmpty())
                 System.out.println("Formatting Error!");
             int i = Integer.parseInt(objectLocation);
-            Room location = this.game.getRooms().get(i);
-            AdventureObject object = new AdventureObject(objectName, objectDescription, location);
-            location.addGameObject(object);
+            if(this.game.getRooms().containsKey(i)){
+                Room location = this.game.getRooms().get(i);
+                AdventureObject object = new AdventureObject(objectName, objectDescription, location);
+                object.setEffect(effectStrategy);
+                location.addGameObject(object);
+            }
+            else{
+                AdventureObject object = new AdventureObject(objectName, objectDescription, null);
+                object.setEffect(effectStrategy);
+                EffectFactory.objects.put(objectName, object);
+            }
         }
-
     }
 
      /**
