@@ -13,12 +13,11 @@ import AdventureModel.Player;
 import AdventureModel.Room;
 import org.junit.jupiter.api.Test;
 
-<<<<<<< HEAD
 import java.util.Arrays;
-=======
 
 import static org.junit.jupiter.api.Assertions.*;
->>>>>>> c15383e (Implemented an effect that unhides all object effect description. Implemented an effect that can give the player items.)
+
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -66,7 +65,10 @@ public class EffectsTest {
     }
 
     /*
+<<<<<<< HEAD
 
+=======
+>>>>>>> 87d27a0 (fixed factory bug. added tests for the effectFactory. added INSPECT command for the player to be able inspect object descriptions.)
     Testing the EffectStrategyMock class
      */
     @Test

@@ -199,7 +199,6 @@ public class AdventureGame implements Serializable {
                 NPC npcInCharge = this.npcHashMap.get(this.player.getCurrentRoom().getRoomNumber());
                 return npcInCharge.action(player, inputArray);
             } else if (inputArray[0].equals("HINT")) {
-
             }
         }
         return "INVALID COMMAND.";
