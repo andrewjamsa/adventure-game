@@ -18,7 +18,7 @@ import java.io.*;
 
 /**
  * Class LoadView.
- *
+ * <p>
  * Loads Serialized adventure games.
  */
 public class LoadView {
@@ -31,7 +31,7 @@ public class LoadView {
     private ListView<String> GameList;
     private String filename = null;
 
-    public LoadView(AdventureGameView adventureGameView){
+    public LoadView(AdventureGameView adventureGameView) {
 
         //note that the buttons in this view are not accessible!!
         this.adventureGameView = adventureGameView;
@@ -58,7 +58,7 @@ public class LoadView {
         closeWindowButton.setId("closeWindowButton"); // DO NOT MODIFY ID
         closeWindowButton.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
         closeWindowButton.setPrefSize(200, 50);
-        closeWindowButton.setFont(new Font(16));
+        closeWindowButton.setFont(new Font(this.adventureGameView.getFontSize()));
         closeWindowButton.setOnAction(e -> dialog.close());
         AdventureGameView.makeButtonAccessible(closeWindowButton, "close window", "This is a button to close the load game window", "Use this button to close the load game window.");
 
@@ -76,10 +76,10 @@ public class LoadView {
         // Default styles which can be modified
         GameList.setPrefHeight(100);
         selectGameLabel.setStyle("-fx-text-fill: #e8e6e3");
-        selectGameLabel.setFont(new Font(16));
+        selectGameLabel.setFont(new Font(this.adventureGameView.getFontSize()));
         selectGameButton.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
         selectGameButton.setPrefSize(200, 50);
-        selectGameButton.setFont(new Font(16));
+        selectGameButton.setFont(new Font(this.adventureGameView.getFontSize()));
         selectGameBox.setAlignment(Pos.CENTER);
         dialogVbox.getChildren().add(selectGameBox);
         Scene dialogScene = new Scene(dialogVbox, 400, 400);
@@ -97,9 +97,9 @@ public class LoadView {
     private void getFiles(ListView<String> listView) {
         File folder = new File("../assignment2/Games/Saved");
         File[] files = folder.listFiles();
-        if (files != null){
-            for (File file: files){
-                if (file.getName().contains(".ser")){
+        if (files != null) {
+            for (File file : files) {
+                if (file.getName().contains(".ser")) {
                     listView.getItems().add(file.getName());
                 }
             }
@@ -114,13 +114,13 @@ public class LoadView {
      * In this case, change the selectGameLabel to indicate a new game has been loaded.
      *
      * @param selectGameLabel the label to use to print errors and or successes to the user.
-     * @param GameList the ListView to populate
+     * @param GameList        the ListView to populate
      */
     private void selectGame(Label selectGameLabel, ListView<String> GameList) throws IOException {
         String selectedFile = GameList.getSelectionModel().getSelectedItems().get(0);
         adventureGameView.stopArticulation();
         try {
-            adventureGameView.model = loadGame("../assignment2/Games/Saved"+File.separator+selectedFile);
+            adventureGameView.model = loadGame("../assignment2/Games/Saved" + File.separator + selectedFile);
             selectGameLabel.setText(selectedFile);
             adventureGameView.updateItems();
             adventureGameView.updateScene("");

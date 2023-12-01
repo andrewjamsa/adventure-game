@@ -49,11 +49,11 @@ public class SaveView {
         saveFileErrorLabel.setId("SaveFileErrorLabel");
         saveFileNameTextField.setId("SaveFileNameTextField");
         saveGameLabel.setStyle("-fx-text-fill: #e8e6e3;");
-        saveGameLabel.setFont(new Font(16));
+        saveGameLabel.setFont(new Font(this.adventureGameView.getFontSize()));
         saveFileErrorLabel.setStyle("-fx-text-fill: #e8e6e3;");
-        saveFileErrorLabel.setFont(new Font(16));
+        saveFileErrorLabel.setFont(new Font(this.adventureGameView.getFontSize()));
         saveFileNameTextField.setStyle("-fx-text-fill: #000000;");
-        saveFileNameTextField.setFont(new Font(16));
+        saveFileNameTextField.setFont(new Font(this.adventureGameView.getFontSize()));
 
         String gameName = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()) + ".ser";
         saveFileNameTextField.setText(gameName);
@@ -62,7 +62,7 @@ public class SaveView {
         saveGameButton.setId("SaveBoardButton"); // DO NOT MODIFY ID
         saveGameButton.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
         saveGameButton.setPrefSize(200, 50);
-        saveGameButton.setFont(new Font(16));
+        saveGameButton.setFont(new Font(this.adventureGameView.getFontSize()));
         AdventureGameView.makeButtonAccessible(saveGameButton, "save game", "This is a button to save the game", "Use this button to save the current game.");
         saveGameButton.setOnAction(e -> saveGame());
 
@@ -70,7 +70,7 @@ public class SaveView {
         closeWindowButton.setId("closeWindowButton"); // DO NOT MODIFY ID
         closeWindowButton.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
         closeWindowButton.setPrefSize(200, 50);
-        closeWindowButton.setFont(new Font(16));
+        closeWindowButton.setFont(new Font(this.adventureGameView.getFontSize()));
         closeWindowButton.setOnAction(e -> dialog.close());
         AdventureGameView.makeButtonAccessible(closeWindowButton, "close window", "This is a button to close the save game window", "Use this button to close the save game window.");
 

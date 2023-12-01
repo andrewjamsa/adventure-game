@@ -37,6 +37,8 @@ import java.util.ArrayList;
  */
 public class AdventureGameView {
 
+    int fontSize; // font size for text
+
     AdventureGame model; //model of the game
     Stage stage; //stage on which all is rendered
     Button saveButton, loadButton, helpButton; //buttons
@@ -57,14 +59,14 @@ public class AdventureGameView {
 
     private PlayerHealthBar healthBar;
 
-    /**
-     * Adventure Game View Constructor
-     * __________________________
-     * Initializes attributes
-     */
     public AdventureGameView(AdventureGame model, Stage stage) {
+        this(model, stage, 16);
+    }
+
+    public AdventureGameView(AdventureGame model, Stage stage, int fontSize) {
         this.model = model;
         this.stage = stage;
+        this.fontSize = fontSize;
         intiUI();
     }
 
@@ -132,7 +134,7 @@ public class AdventureGameView {
         topButtons.setAlignment(Pos.CENTER);
 
         inputTextField = new TextField();
-        inputTextField.setFont(new Font("Arial", 16));
+        inputTextField.setFont(new Font("Arial", this.getFontSize()));
         inputTextField.setFocusTraversable(true);
 
         inputTextField.setAccessibleRole(AccessibleRole.TEXT_AREA);
@@ -145,12 +147,12 @@ public class AdventureGameView {
         Label objLabel = new Label("Objects in Room");
         objLabel.setAlignment(Pos.CENTER);
         objLabel.setStyle("-fx-text-fill: white;");
-        objLabel.setFont(new Font("Arial", 16));
+        objLabel.setFont(new Font("Arial", this.getFontSize()));
 
         Label invLabel = new Label("Your Inventory");
         invLabel.setAlignment(Pos.CENTER);
         invLabel.setStyle("-fx-text-fill: white;");
-        invLabel.setFont(new Font("Arial", 16));
+        invLabel.setFont(new Font("Arial", this.getFontSize()));
 
         //add all the widgets to the GridPane
         gridPane.add(objLabel, 0, 0, 1, 1);  // Add label
@@ -159,7 +161,7 @@ public class AdventureGameView {
 
         Label commandLabel = new Label("What would you like to do?");
         commandLabel.setStyle("-fx-text-fill: white;");
-        commandLabel.setFont(new Font("Arial", 16));
+        commandLabel.setFont(new Font("Arial", this.getFontSize()));
 
         updateScene(""); //method displays an image and whatever text is supplied
         updateItems(); //update items shows inventory and objects in rooms
@@ -218,7 +220,7 @@ public class AdventureGameView {
      */
     private void customizeButton(Button inputButton, int w, int h) {
         inputButton.setPrefSize(w, h);
-        inputButton.setFont(new Font("Arial", 16));
+        inputButton.setFont(new Font("Arial", this.getFontSize()));
         inputButton.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
     }
 
@@ -392,7 +394,7 @@ public class AdventureGameView {
             else roomDescLabel.setText(roomDesc);
         } else roomDescLabel.setText(textToDisplay);
         roomDescLabel.setStyle("-fx-text-fill: white;");
-        roomDescLabel.setFont(new Font("Arial", 16));
+        roomDescLabel.setFont(new Font("Arial", this.getFontSize()));
         roomDescLabel.setAlignment(Pos.CENTER);
     }
 
@@ -628,5 +630,23 @@ public class AdventureGameView {
             mediaPlayer.stop(); //shush!
             mediaPlaying = false;
         }
+    }
+
+    /**
+     * This method returns the font size
+     *
+     * @return fontSize
+     */
+    public int getFontSize() {
+        return fontSize;
+    }
+
+    /**
+     * This method sets the font size
+     *
+     * @param fontSize the font size to set
+     */
+    public void setFontSize(int fontSize) {
+        this.fontSize = fontSize;
     }
 }
