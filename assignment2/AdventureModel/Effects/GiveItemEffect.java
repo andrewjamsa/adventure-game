@@ -24,6 +24,5 @@ public class GiveItemEffect implements EffectStrategy{
             return String.format("Gives you the item '%s'", object.getName());
         }
         return "Does nothing";
-
     }
 }

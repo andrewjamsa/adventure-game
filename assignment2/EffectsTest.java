@@ -4,18 +4,21 @@ import AdventureModel.Effects.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 
 import AdventureModel.AdventureGame;
 import AdventureModel.AdventureObject;
-import AdventureModel.Effects.DamageEffect;
-import AdventureModel.Effects.EffectStrategy;
-import AdventureModel.Effects.HideableEffect;
-import AdventureModel.Effects.MultipleEffects;
+import AdventureModel.Effects.*;
 import AdventureModel.Player;
 import AdventureModel.Room;
 import org.junit.jupiter.api.Test;
 
+<<<<<<< HEAD
 import java.util.Arrays;
+=======
+
+import static org.junit.jupiter.api.Assertions.*;
+>>>>>>> c15383e (Implemented an effect that unhides all object effect description. Implemented an effect that can give the player items.)
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
