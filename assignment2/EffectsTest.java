@@ -2,16 +2,15 @@
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 
 import AdventureModel.AdventureGame;
 import AdventureModel.AdventureObject;
-import AdventureModel.Effects.DamageEffect;
-import AdventureModel.Effects.EffectStrategy;
-import AdventureModel.Effects.HideableEffect;
-import AdventureModel.Effects.MultipleEffects;
+import AdventureModel.Effects.*;
 import AdventureModel.Player;
 import AdventureModel.Room;
 import org.junit.jupiter.api.Test;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -90,5 +89,17 @@ public class EffectsTest {
         hideEffect.doEffect(player);
         assertEquals(15, player.getHealthValue());
         assertEquals("Damages you 5 health everytime you move.", hideEffect.getDescription());
+    }
+
+    /*
+    Test the GiveItemEffect class
+     */
+    @Test
+    void giveItemEffectsTest(){
+        Player player = new Player(new Room("test", 1, "testroomdesc", "testname"), 20, 100);
+        AdventureObject object = new AdventureObject("TestObject","TestObjectDesc", null);
+        EffectStrategy effect = new GiveItemEffect(object);
+        effect.doEffect(player);
+        assertTrue(player.inventory.contains(object));
     }
 }

@@ -87,6 +87,10 @@ public class AdventureObject implements Serializable {
         this.effect = effect;
     }
 
+    public EffectStrategy getEffect(){
+        return effect;
+    }
+
     /**
      * Do the effect of the object
      * Does nothing if effect is not set
