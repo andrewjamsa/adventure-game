@@ -1,19 +1,13 @@
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
-
-import AdventureModel.AdventureGame;
 import AdventureModel.AdventureObject;
 import AdventureModel.Effects.*;
 import AdventureModel.Player;
 import AdventureModel.Room;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * A mock class that implements EffectStrategy. for the sake of testing.
  */
@@ -38,6 +32,25 @@ class EffectStrategyMock implements EffectStrategy{
 }
 
 public class EffectsTest {
+    /*
+    Testing the factory
+     */
+    @Test
+    void effectFactoryTest(){
+        EffectStrategy effect = EffectFactory.generateEffect("[\"damageEffect\", -1]");
+        assertTrue(effect instanceof DamageEffect);
+    }
+
+    /*
+    Testing the factory recursive
+     */
+    @Test
+    void effectFactoryRecursiveTest(){
+        EffectStrategy effect = EffectFactory.generateEffect("[\"multipleEffects\", [\"damageEffect\", -1], [\"damageEffect\", -2]]");
+        assertTrue(effect instanceof MultipleEffects);
+        assertEquals("Damages you 1 health everytime you move, Damages you 2 health everytime you move", effect.getDescription());
+    }
+
     /*
     Testing the EffectStrategyMock class
      */

@@ -184,6 +184,12 @@ public class AdventureGame implements Serializable {
                 } else {
                     return "THIS OBJECT IS NOT IN YOUR INVENTORY:\n " + inputArray[1];
                 }
+            }else if (inputArray[0].equals("INSPECT") && inputArray.length == 2) {
+                if (this.player.checkIfObjectInInventory(inputArray[1])) {
+                    return "YOU HAVE INSPECTED:\n " + player.getObject(inputArray[1]).getDescription();
+                } else {
+                    return "THIS OBJECT IS NOT IN YOUR INVENTORY:\n " + inputArray[1];
+                }
             }
         }
         return "INVALID COMMAND.";
