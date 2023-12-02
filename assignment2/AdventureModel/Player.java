@@ -53,7 +53,6 @@ public class Player implements Serializable {
         }
     }
 
-
     /**
      * checkIfObjectInInventory
      * __________________________
@@ -63,17 +62,11 @@ public class Player implements Serializable {
      * @return true if object is in inventory, false otherwise
      */
     public boolean checkIfObjectInInventory(String s) {
-<<<<<<< Updated upstream
-        for (int i = 0; i < this.inventory.size(); i++) {
-            if (this.inventory.get(i).getName().equals(s)) return true;
-=======
         for(int i = 0; i<this.inventory.size();i++){
             if(this.inventory.get(i).getName().equalsIgnoreCase(s)) return true;
->>>>>>> Stashed changes
         }
         return false;
     }
-
 
     /**
      * This method drops an object in the players inventory and adds it to the room.
@@ -129,6 +122,16 @@ public class Player implements Serializable {
             objects.add(this.inventory.get(i).getName());
         }
         return objects;
+    }
+
+    /**
+     * Does the effect of all the objects in player's inventory.
+     */
+    public void doAllObjectEffect() {
+        // Copies to modifying inventory in an effect doesnt cause error
+        for (AdventureObject object : new ArrayList<AdventureObject>(inventory)) {
+            object.doEffect(this);
+        }
     }
 
     /**
