@@ -149,7 +149,6 @@ public class Player implements Serializable {
         }
     }
 
-
     /** This method returns whether the player is alive or not.
      *
      * @return true if the player is alive, false otherwise
