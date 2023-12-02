@@ -1,6 +1,7 @@
 package AdventureModel;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -24,6 +25,18 @@ public class AdventureLoader {
         this.adventureName = directoryName;
     }
 
+    public void parseNPC() throws IOException {
+        String npcFileName = this.adventureName + "/npc.txt";
+        BufferedReader buff = new BufferedReader(new FileReader(npcFileName));
+        NPCFactory npcFactory = new NPCFactory();
+        this.game.npcHashMap = npcFactory.NPCGenerator(buff, this.game.getRooms());
+    }
+    public void parseSQ() throws IOException {
+        String sqFileName = this.adventureName + "/side_quest.txt";
+        BufferedReader buff = new BufferedReader(new FileReader(sqFileName));
+        SQFactory sqFactory = new SQFactory();
+        sqFactory.SQGenerator(this.game.npcHashMap, buff);
+    }
      /**
      * Load game from directory
      */
@@ -31,6 +44,8 @@ public class AdventureLoader {
         parseRooms();
         parseObjects();
         parseSynonyms();
+        parseNPC();
+        parseSQ();
         this.game.setHelpText(parseOtherFile("help"));
     }
 

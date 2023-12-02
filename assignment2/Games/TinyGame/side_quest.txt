@@ -1,0 +1,11 @@
+type: QNA
+name: NPC-no-1
+question: what is the capital of France?
+hint: congratulations! here's a hint: UNKNOWN HINT
+incorrect: wrongggg!! try again.
+
+type: OBJECT
+name: NPC-no-3
+required: TORCH
+question: would you be willing to give me your torch?
+accomplished: IPAD

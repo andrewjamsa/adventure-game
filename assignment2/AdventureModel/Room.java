@@ -40,6 +40,8 @@ public class Room implements Serializable {
      */
     private boolean isVisited;
 
+    public NPC NPCAvailable;
+
     /**
      * AdvGameRoom constructor.
      *
@@ -53,6 +55,7 @@ public class Room implements Serializable {
         this.roomDescription = roomDescription;
         this.adventureName = adventureName;
         this.isVisited = false;
+        this.NPCAvailable = null;
     }
 
 
