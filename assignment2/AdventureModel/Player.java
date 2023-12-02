@@ -62,8 +62,8 @@ public class Player implements Serializable {
      * @return true if object is in inventory, false otherwise
      */
     public boolean checkIfObjectInInventory(String s) {
-        for (int i = 0; i < this.inventory.size(); i++) {
-            if (this.inventory.get(i).getName().equals(s)) return true;
+        for(int i = 0; i<this.inventory.size();i++){
+            if(this.inventory.get(i).getName().equalsIgnoreCase(s)) return true;
         }
         return false;
     }

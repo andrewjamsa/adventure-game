@@ -129,8 +129,6 @@ public class AdventureGameView {
         HBox topButtons = new HBox();
         topButtons.getChildren().addAll(saveButton, helpButton, loadButton);
         topButtons.setSpacing(10);
-        topButtons.setAlignment(Pos.CENTER);
-
         inputTextField = new TextField();
         inputTextField.setFont(new Font("Arial", 16));
         inputTextField.setFocusTraversable(true);
@@ -240,39 +238,17 @@ public class AdventureGameView {
         // button.add
 
         inputTextField.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER) {
-                          /*
-                          String stripped = inputTextField.getText().stripTrailing().stripLeading();
-                          try {
-                          String command = stripped.split(" ")[0];
-                          String object = stripped.split(" ")[1];
-                          if (command.equalsIgnoreCase("TAKE")){
-                              for (Node element: objectsInRoom.getChildren()){
-                                  if (((Button) element).getText().equalsIgnoreCase(object)){
-                                      objectsInRoom.getChildren().remove(element);
-                                      objectsInInventory.getChildren().add(element);
-                                      break;
-                                  }
-                              }
-                          } else if (command.equalsIgnoreCase("DROP")) {
-                              for (Node element: objectsInInventory.getChildren()){
-                                  if (((Button) element).getText().equalsIgnoreCase(object)){
-                                      objectsInRoom.getChildren().add(element);
-                                      objectsInInventory.getChildren().remove(element);
-                                      break;
-                                  }
-                              }
-                          }} catch (Exception ignored) {
-                          }*/
-                submitEvent(inputTextField.getText().stripTrailing().stripLeading());
-                inputTextField.setText("");
-            } else if (event.getCode() == KeyCode.TAB) {
-                if (gridPane.getChildren().indexOf(inputTextField) == gridPane.getChildren().size() - 1) {
-                    gridPane.getChildren().get(0).requestFocus();
-                } else {
-                    gridPane.getChildren().get(gridPane.getChildren().indexOf(inputTextField) + 1).requestFocus();
-                }
-            }
+              if (event.getCode() == KeyCode.ENTER) {
+
+                  submitEvent(inputTextField.getText().stripTrailing().stripLeading());
+                  inputTextField.setText("");
+              } else if (event.getCode() == KeyCode.TAB) {
+                  if (gridPane.getChildren().indexOf(inputTextField) == gridPane.getChildren().size()-1){
+                      gridPane.getChildren().get(0).requestFocus();
+                  }else {
+                      gridPane.getChildren().get(gridPane.getChildren().indexOf(inputTextField) + 1).requestFocus();
+                  }
+              }
         });
     }
 

@@ -13,8 +13,11 @@ public class AdventureGame implements Serializable {
     private String helpText; //A variable to store the Help text of the game. This text is displayed when the user types "HELP" command.
     private final HashMap<Integer, Room> rooms; //A list of all the rooms in the game.
     private HashMap<String, String> synonyms = new HashMap<>(); //A HashMap to store synonyms of commands.
-    private final String[] actionVerbs = {"QUIT", "INVENTORY", "TAKE", "DROP", "INSPECT"}; //List of action verbs (other than motions) that exist in all games. Motion vary depending on the room and game.
+    private final String[] actionVerbs = {"HINT", "NPC", "QUIT", "INVENTORY", "TAKE", "DROP", "INSPECT"}; //List of action verbs (other than motions) that exist in all games. Motion vary depending on the room and game.
+
     public Player player; //The Player of the game.
+    public HashMap<Integer, NPC> npcHashMap = new HashMap<>();
+    public ArrayList<String> hints = new ArrayList<>();
 
     public AdventureGame(String name) {
         this(name, 100, 100); // THESE ARE THE DEFAULT VALUES, values should normally be set in game file or due to difficulty
@@ -192,9 +195,15 @@ public class AdventureGame implements Serializable {
                 } else {
                     return "THIS OBJECT IS NOT IN YOUR INVENTORY:\n " + inputArray[1];
                 }
+            } else if (inputArray[0].equals("NPC")) {
+                NPC npcInCharge = this.npcHashMap.get(this.player.getCurrentRoom().getRoomNumber());
+                return npcInCharge.action(player, inputArray);
+            } else if (inputArray[0].equals("HINT")) {
+
             }
         }
         return "INVALID COMMAND.";
+
     }
 
     /**
