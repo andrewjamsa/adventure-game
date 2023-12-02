@@ -3,7 +3,6 @@ package AdventureModel.Effects;
 import javax.lang.model.type.NullType;
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 public interface EffectDecorators extends EffectStrategy{
 

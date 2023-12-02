@@ -53,7 +53,6 @@ public class Player implements Serializable {
         }
     }
 
-
     /**
      * checkIfObjectInInventory
      * __________________________
@@ -83,7 +82,6 @@ public class Player implements Serializable {
         }
         return null;
     }
-
 
     /**
      * This method drops an object in the players inventory and adds it to the room.
@@ -144,9 +142,9 @@ public class Player implements Serializable {
     /**
      * Does the effect of all the objects in player's inventory.
      */
-    public void doAllObjectEffect(){
+    public void doAllObjectEffect() {
         // Copies to modifying inventory in an effect doesnt cause error
-        for (AdventureObject object: new ArrayList<AdventureObject>(inventory)) {
+        for (AdventureObject object : new ArrayList<AdventureObject>(inventory)) {
             object.doEffect(this);
         }
     }
@@ -154,8 +152,13 @@ public class Player implements Serializable {
      * This method returns whether the player is alive or not.
 =======
 
+<<<<<<< HEAD
     /** This method returns whether the player is alive or not.
 >>>>>>> d06569d75938a2825ddd816f8cd39865d34f4408
+=======
+    /**
+     * This method returns whether the player is alive or not.
+>>>>>>> development
      *
      * @return true if the player is alive, false otherwise
      */

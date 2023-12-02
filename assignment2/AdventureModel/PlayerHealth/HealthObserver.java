@@ -37,6 +37,26 @@ public class HealthObserver implements Observer {
         return this.getHealth() > 0;
     }
 
+    /**
+     * This method returns the maximum health value of the player.
+     *
+     * @return the maximum health value of the player
+     */
+    public Integer getMaxHealth() {
+        return this.subject.getMaxHealth();
+    }
+
+    /**
+     * This method returns the health percentage of the player.
+     *
+     * @return the health percentage of the player
+     */
+    public double getHealthPercentage() {
+        if (this.getHealth() < 0) return 0;
+
+        return (double) this.getHealth() / this.getMaxHealth();
+    }
+
 
     @Override
     public void update(Integer value) {
