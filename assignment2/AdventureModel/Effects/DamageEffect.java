@@ -26,7 +26,7 @@ public class DamageEffect implements EffectStrategy{
             return String.format("Heals you %s health everytime you move", damage);
         }
         else {
-            return "Does nothing?";
+            return "Does nothing";
         }
     }
 }

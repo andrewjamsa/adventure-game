@@ -81,6 +81,13 @@ public class AdventureObject implements Serializable {
     }
 
     /**
+     * This method sets the location the object is in
+     */
+    public void setLocation(Room location){
+        this.location = location;
+    }
+
+    /**
      * Sets the effect of the object
      */
     public void setEffect(EffectStrategy effect) {

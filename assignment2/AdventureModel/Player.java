@@ -148,17 +148,8 @@ public class Player implements Serializable {
             object.doEffect(this);
         }
     }
-    /**
-     * This method returns whether the player is alive or not.
-=======
 
-<<<<<<< HEAD
     /** This method returns whether the player is alive or not.
->>>>>>> d06569d75938a2825ddd816f8cd39865d34f4408
-=======
-    /**
-     * This method returns whether the player is alive or not.
->>>>>>> development
      *
      * @return true if the player is alive, false otherwise
      */

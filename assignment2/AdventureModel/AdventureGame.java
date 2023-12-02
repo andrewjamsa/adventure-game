@@ -1,7 +1,9 @@
 package AdventureModel;
 
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 
 /**
  * Class AdventureGame.  Handles all the necessary tasks to run the Adventure game.
@@ -11,7 +13,7 @@ public class AdventureGame implements Serializable {
     private String helpText; //A variable to store the Help text of the game. This text is displayed when the user types "HELP" command.
     private final HashMap<Integer, Room> rooms; //A list of all the rooms in the game.
     private HashMap<String, String> synonyms = new HashMap<>(); //A HashMap to store synonyms of commands.
-    private final String[] actionVerbs = {"QUIT", "INVENTORY", "TAKE", "DROP"}; //List of action verbs (other than motions) that exist in all games. Motion vary depending on the room and game.
+    private final String[] actionVerbs = {"QUIT", "INVENTORY", "TAKE", "DROP", "INSPECT"}; //List of action verbs (other than motions) that exist in all games. Motion vary depending on the room and game.
     public Player player; //The Player of the game.
 
     public AdventureGame(String name) {

@@ -7,7 +7,15 @@ import org.json.simple.parser.JSONParser;
 import java.util.*;
 
 public class EffectFactory {
-    static public Map<String, AdventureObject> objects = new HashMap<>();
+    static private Map<String, AdventureObject> objects = new HashMap<>();
+
+    /**
+     * Sets the objects map based on the objectMap given
+     * @param objectMap The objectMap
+     */
+    static public void setObjects(Map<String, AdventureObject> objectMap){
+        objects = objectMap;
+    }
 
     /**
      * Generates the EffectStrategy based on the given string.
@@ -44,7 +52,8 @@ public class EffectFactory {
             List<Double> weights = new ArrayList<>();
             for (int i = 1; i < arr.size(); i+=2) {
                 JSONArray effArr = (JSONArray) arr.get(i);
-                Double weight = (Double) arr.get(i+1);
+                Number n = (Number) arr.get(i+1);
+                Double weight = n.doubleValue();
                 effects.add(generateFromArray(effArr));
                 weights.add(weight);
             }
