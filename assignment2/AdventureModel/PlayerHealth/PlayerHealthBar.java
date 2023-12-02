@@ -4,43 +4,52 @@ import AdventureModel.Player;
 import javafx.geometry.Insets;
 import javafx.scene.control.ProgressBar;
 
-public class PlayerHealthBar extends ProgressBar {
+public class PlayerHealthBar extends HealthObserver {
 
     /**
      * The observer that observes the player's health.
      */
-    private HealthObserver observer;
+    private final ProgressBar healthBar;
 
-    public PlayerHealthBar() {
-        super();
+    public PlayerHealthBar(Player player) {
+        super(player.health);
+
+        healthBar = new ProgressBar();
 
         // --- styling ---
-        setPrefHeight(50);
-        setPrefWidth(650);
-        setStyle("-fx-accent: #17871b"); // default color
-        setPadding(new Insets(0, 100, 0, 100));
+        healthBar.setPrefHeight(50);
+        healthBar.setPrefWidth(650);
+        healthBar.setStyle("-fx-accent: #17871b"); // default color
+        healthBar.setPadding(new Insets(0, 100, 0, 100));
 
         // --- accessibility ---
-        setAccessibleText("Health Bar");
-        setAccessibleHelp("This is the health bar");
-        setAccessibleRoleDescription("This is the health bar");
+        healthBar.setAccessibleText("Health Bar");
+        healthBar.setAccessibleHelp("This is the health bar");
+        healthBar.setAccessibleRoleDescription("This is the health bar");
+
+        updateBar();
     }
 
     /**
-     * This method links the player to the health bar.
+     * This method returns the health bar.
+     */
+    public void updateBar() {
+        this.getBar().setProgress(this.getHealthPercentage());
+    }
+
+    /**
+     * This method returns the health bar.
      *
-     * @param player the player to be linked
+     * @return the health bar
      */
-    public void linkPlayer(Player player) {
-        this.observer = new HealthObserver(player.health);
-        this.update();
+    public ProgressBar getBar() {
+        return this.healthBar;
     }
 
-    /**
-     * This method updates the health bar.
-     */
-    public void update() {
-        setProgress(this.observer.getHealthPercentage());
-    }
+    @Override
+    public void onChange() {
+        if (this.healthBar == null) return;
 
+        updateBar(); // updates the health bar
+    }
 }
