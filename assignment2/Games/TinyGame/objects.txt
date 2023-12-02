@@ -1,11 +1,14 @@
 BIRD
+["damageEffect", -3]
 a water bird
 1
 
 CHEST
+
 a pirate chest
 2
 
 BOOK
+
 a copy of an illuminated manuscript
-3
+-1
