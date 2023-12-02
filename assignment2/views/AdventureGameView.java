@@ -174,11 +174,10 @@ public class AdventureGameView {
         gridPane.add(textEntry, 0, 2, 3, 1);
 
         // add the health bar
-        healthBar = new PlayerHealthBar();
-        healthBar.linkPlayer(model.getPlayer());
+        healthBar = new PlayerHealthBar(model.getPlayer());
 
         // add the health bar to the gridpane
-        gridPane.add(healthBar, 1, 3, 1, 1);
+        gridPane.add(healthBar.getBar(), 1, 3, 1, 1);
 
         // Render everything
         var scene = new Scene(gridPane, 1000, 800);
