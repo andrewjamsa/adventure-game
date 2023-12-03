@@ -1,4 +1,9 @@
+<<<<<<< Updated upstream
 5: the final room before winning the game is room 8
 5: don't ever go to room 9 if you don't want to start all over again
+=======
+5: the goal can be reached towards southeast
+5: don't ever pass the curtain without complete objects
+>>>>>>> Stashed changes
 1: if you have BIRD, you will win this game faster
 3: the CHEST is useless, try to bargain it with an NPC
