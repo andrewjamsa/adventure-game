@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Random;
 
 /**
  * Class AdventureGame.  Handles all the necessary tasks to run the Adventure game.
@@ -17,7 +18,7 @@ public class AdventureGame implements Serializable {
 
     public Player player; //The Player of the game.
     public HashMap<Integer, NPC> npcHashMap = new HashMap<>();
-    public ArrayList<String> hints = new ArrayList<>();
+    public HashMap<Integer, ArrayList<String>> hints = new HashMap<>();
 
     public AdventureGame(String name) {
         this(name, 100, 100); // THESE ARE THE DEFAULT VALUES, values should normally be set in game file or due to difficulty
@@ -193,7 +194,10 @@ public class AdventureGame implements Serializable {
                 NPC npcInCharge = this.npcHashMap.get(this.player.getCurrentRoom().getRoomNumber());
                 return npcInCharge.action(player, inputArray);
             } else if (inputArray[0].equals("HINT")) {
-
+                Random rand = new Random();
+                ArrayList<String> hintsList = hints.get(this.player.getCurrentRoom().getRoomNumber());
+                int randomNumber = rand.nextInt(hintsList.size());
+                return hintsList.get(randomNumber);
             }else if (inputArray[0].equals("INSPECT") && inputArray.length == 2) {
                 if (this.player.checkIfObjectInInventory(inputArray[1])) {
                     return "YOU HAVE INSPECTED:\n " + player.getObject(inputArray[1]).getDescription();

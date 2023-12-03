@@ -11,4 +11,5 @@ public interface SideQuest {
     public String type = null;
     public String question = null;
     public default String getType(){ return this.type;}
+    public default String getQuestion(){return this.question;}
 }
