@@ -195,14 +195,18 @@ public class AdventureGame implements Serializable {
                 return npcInCharge.action(player, inputArray);
             } else if (inputArray[0].equals("HINT")) {
                 Random rand = new Random();
+                if (hints.containsKey(this.player.getCurrentRoom().getRoomNumber())){
                 ArrayList<String> hintsList = hints.get(this.player.getCurrentRoom().getRoomNumber());
                 int randomNumber = rand.nextInt(hintsList.size());
-                return hintsList.get(randomNumber);
+                return hintsList.get(randomNumber);} else {
+                    return "no hint is available for this room";
+                }
             }else if (inputArray[0].equals("INSPECT") && inputArray.length == 2) {
                 if (this.player.checkIfObjectInInventory(inputArray[1])) {
                     return "YOU HAVE INSPECTED:\n " + player.getObject(inputArray[1]).getDescription();
                 } else {
                     return "THIS OBJECT IS NOT IN YOUR INVENTORY:\n " + inputArray[1];
+
                 }
             }
         }

@@ -16,6 +16,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.layout.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -24,6 +26,8 @@ import javafx.scene.AccessibleRole;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Class AdventureGameView.
@@ -40,6 +44,7 @@ public class AdventureGameView {
     AdventureGame model; //model of the game
     Stage stage; //stage on which all is rendered
     Button saveButton, loadButton, helpButton; //buttons
+    Label timerLabel;
     Boolean helpToggle = false; //is help on display?
 
     GridPane gridPane = new GridPane(); //to hold images and buttons
@@ -54,6 +59,44 @@ public class AdventureGameView {
 
     private ArrayList<Node> grid11 = new ArrayList<>();
     private VBox helpVBox = null;
+    private Timer timer = new Timer();
+    private TimerTask timerTask = new TimerTask() {
+        @Override
+        public void run() {
+            int hh;
+            int mm;
+            int ss = 0;
+            if (time>=3600){
+                hh = time/3600;
+                mm = (time%3600)/60;
+                ss = (time%3600%60);
+            } else {
+                hh = 0;
+                if (time >=60) {
+                    mm = (time%3600)/60;
+                    ss = (time%60);
+                } else {
+                    mm = 0;
+                    ss = time;
+                }
+            }
+            time -=1;
+            int finalSs = ss;
+            Platform.runLater(() -> timerLabel.setText(String.format("%d:%d:%d", hh, mm , finalSs)));
+            Platform.runLater(() ->{
+            if (time < 0){
+                timer.cancel();
+                updateScene("YOU LOST AGAINST THE TIME");
+                PauseTransition pause = new PauseTransition(Duration.seconds(10));
+                pause.setOnFinished(event -> {
+                    Platform.exit();
+                });
+                pause.play();
+            };
+        });
+        }
+    };
+    private int time = 0;
 
     private PlayerHealthBar healthBar;
 
@@ -126,9 +169,18 @@ public class AdventureGameView {
         makeButtonAccessible(helpButton, "Help Button", "This button gives game instructions.", "This button gives instructions on the game controls. Click it to learn how to play.");
         addInstructionEvent();
 
+        timerLabel = new Label("Normal Mode");
+        timerLabel.setId("Timer");
+        timerLabel.setAlignment(Pos.CENTER);
+        timerLabel.setPrefSize(100, 50);
+        timerLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        timerLabel.setStyle("-fx-background-color: white; -fx-text-fill: #17871b;");
+
         HBox topButtons = new HBox();
-        topButtons.getChildren().addAll(saveButton, helpButton, loadButton);
+        topButtons.getChildren().addAll(saveButton, helpButton, loadButton, this.timerLabel);
         topButtons.setSpacing(10);
+        topButtons.setAlignment(Pos.CENTER);
+
         inputTextField = new TextField();
         inputTextField.setFont(new Font("Arial", 16));
         inputTextField.setFocusTraversable(true);
@@ -252,6 +304,9 @@ public class AdventureGameView {
         });
     }
 
+    private void showTimer(){
+        this.timer.scheduleAtFixedRate(timerTask, 0, 1000);
+    }
 
     /**
      * submitEvent
@@ -277,7 +332,35 @@ public class AdventureGameView {
             showCommands(); //this is new!  We did not have this command in A1
             return;
         }
+        String[] checkTimer = text.split(" ");
+        if (checkTimer[0].equalsIgnoreCase("TIMER") || checkTimer[0].equalsIgnoreCase("T")){
+            this.time = 0;
+            if (checkTimer.length==1){
+                updateScene("Please enter the timer in the format of TIMER hh/mm/ss");
+                return;
+            }
+            if (checkTimer.length==2){
+                String[] timeInString = checkTimer[1].split(":");
+                for (int j=0; j<timeInString.length; j++){
+                    try{
+                        Integer.parseInt(timeInString[j]);
+                    } catch (NumberFormatException e){
+                        updateScene("Please enter the timer in the format of TIMER hh/mm/ss");
+                    }
+                }
+                if (timeInString.length==3){
+                    this.time += Integer.parseInt(timeInString[2])+Integer.parseInt(timeInString[1])*60
+                            +Integer.parseInt(timeInString[0])*3600;
+                } else if (timeInString.length==2) {
+                    this.time += Integer.parseInt(timeInString[1])+Integer.parseInt(timeInString[0])*60;
+                } else if (timeInString.length==1) {
+                    this.time += Integer.parseInt((timeInString[0]));
+                }
+                showTimer();
+                return;
+            }
 
+        }
         //try to move!
         String output = this.model.interpretAction(text); //process the command!
 
