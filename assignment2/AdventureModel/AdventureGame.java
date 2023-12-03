@@ -1,7 +1,9 @@
 package AdventureModel;
 
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 
 /**
  * Class AdventureGame.  Handles all the necessary tasks to run the Adventure game.
@@ -10,13 +12,9 @@ public class AdventureGame implements Serializable {
     private final String directoryName; //An attribute to store the Introductory text of the game.
     private String helpText; //A variable to store the Help text of the game. This text is displayed when the user types "HELP" command.
     private final HashMap<Integer, Room> rooms; //A list of all the rooms in the game.
-<<<<<<< Updated upstream
-    private HashMap<String, String> synonyms = new HashMap<>(); //A HashMap to store synonyms of commands.
-    private final String[] actionVerbs = {"QUIT", "INVENTORY", "TAKE", "DROP"}; //List of action verbs (other than motions) that exist in all games. Motion vary depending on the room and game.
-=======
     private HashMap<String,String> synonyms = new HashMap<>(); //A HashMap to store synonyms of commands.
     private final String[] actionVerbs = {"HINT","NPC","QUIT","INVENTORY","TAKE","DROP"}; //List of action verbs (other than motions) that exist in all games. Motion vary depending on the room and game.
->>>>>>> Stashed changes
+
     public Player player; //The Player of the game.
     public HashMap<Integer, NPC> npcHashMap = new HashMap<>();
     public ArrayList<String> hints = new ArrayList<>();
@@ -196,6 +194,12 @@ public class AdventureGame implements Serializable {
                 return npcInCharge.action(player, inputArray);
             } else if (inputArray[0].equals("HINT")) {
 
+            }else if (inputArray[0].equals("INSPECT") && inputArray.length == 2) {
+                if (this.player.checkIfObjectInInventory(inputArray[1])) {
+                    return "YOU HAVE INSPECTED:\n " + player.getObject(inputArray[1]).getDescription();
+                } else {
+                    return "THIS OBJECT IS NOT IN YOUR INVENTORY:\n " + inputArray[1];
+                }
             }
         }
         return "INVALID COMMAND.";

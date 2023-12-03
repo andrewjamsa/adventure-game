@@ -1,9 +1,15 @@
 package AdventureModel;
 
+import AdventureModel.Effects.EffectFactory;
+import AdventureModel.Effects.EffectStrategy;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Class AdventureLoader. Loads an adventure from files.
@@ -12,6 +18,7 @@ public class AdventureLoader {
 
     private AdventureGame game; //the game to return
     private String adventureName; //the name of the adventure
+    private Map<String, AdventureObject> objects = new HashMap<>();
 
     /**
      * Adventure Loader Constructor
@@ -41,6 +48,9 @@ public class AdventureLoader {
      * Load game from directory
      */
     public void loadGame() throws IOException {
+        objects.clear();
+        fillObjectsMap();
+        EffectFactory.setObjects(objects);
         parseRooms();
         parseObjects();
         parseSynonyms();
@@ -68,6 +78,8 @@ public class AdventureLoader {
             // now need to get room name
             String roomName = buff.readLine();
 
+            EffectStrategy effectStrategy = EffectFactory.generateEffect(buff.readLine());
+
             // now we need to get the description
             String roomDescription = "";
             String line = buff.readLine();
@@ -79,6 +91,7 @@ public class AdventureLoader {
 
             // now we make the room object
             Room room = new Room(roomName, roomNumber, roomDescription, adventureName);
+            room.setEffect(effectStrategy);
 
             // now we make the motion table
             line = buff.readLine(); // reads the line after "-----"
@@ -103,8 +116,31 @@ public class AdventureLoader {
 
     }
 
+    /**
+     * Fill objects map by parsing objects.txt. Effects and location not filled
+     */
+    public void fillObjectsMap() throws IOException {
+        String objectFileName = this.adventureName + "/objects.txt";
+        System.out.println(new File(objectFileName).getAbsolutePath());
+
+        BufferedReader buff = new BufferedReader(new FileReader(objectFileName));
+
+        while (buff.ready()) {
+            String objectName = buff.readLine();
+            buff.readLine();
+            String objectDescription = buff.readLine();
+            String objectLocation = buff.readLine();
+            String separator = buff.readLine();
+            if (separator != null && !separator.isEmpty())
+                System.out.println("Formatting Error!");
+            AdventureObject object = new AdventureObject(objectName, objectDescription, null);
+            objects.put(objectName, object);
+        }
+        buff.close();
+    }
+
      /**
-     * Parse Objects File
+     * Parse Objects File uses objects map. Fills in missing location and effects
      */
     public void parseObjects() throws IOException {
 
@@ -113,17 +149,22 @@ public class AdventureLoader {
 
         while (buff.ready()) {
             String objectName = buff.readLine();
+            EffectStrategy effectStrategy = EffectFactory.generateEffect(buff.readLine());
             String objectDescription = buff.readLine();
             String objectLocation = buff.readLine();
             String separator = buff.readLine();
             if (separator != null && !separator.isEmpty())
                 System.out.println("Formatting Error!");
             int i = Integer.parseInt(objectLocation);
-            Room location = this.game.getRooms().get(i);
-            AdventureObject object = new AdventureObject(objectName, objectDescription, location);
-            location.addGameObject(object);
+            AdventureObject object = objects.get(objectName);
+            object.setEffect(effectStrategy);
+            if(this.game.getRooms().containsKey(i)){
+                Room location = this.game.getRooms().get(i);
+                object.setLocation(location);
+                location.addGameObject(object);
+            }
         }
-
+        buff.close();
     }
 
      /**

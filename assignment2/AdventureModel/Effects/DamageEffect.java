@@ -20,13 +20,13 @@ public class DamageEffect implements EffectStrategy{
     @Override
     public String getDescription() {
         if(damage < 0){
-            return String.format("Damages you %s health everytime you move.", (-damage));
+            return String.format("Damages you %s health everytime you move", (-damage));
         }
         else if(damage > 0){
-            return String.format("Heals you %s health everytime you move.", damage);
+            return String.format("Heals you %s health everytime you move", damage);
         }
         else {
-            return "Does nothing?";
+            return "Does nothing";
         }
     }
 }

@@ -3,7 +3,7 @@ package AdventureModel.Effects;
 import AdventureModel.Player;
 
 import javax.lang.model.type.NullType;
-import java.util.function.Function;
+import java.util.function.Consumer;
 
 public class HideableEffect implements EffectDecorators{
     private boolean hide = true;
@@ -30,8 +30,8 @@ public class HideableEffect implements EffectDecorators{
     }
 
     @Override
-    public void applyFunction(Function<EffectStrategy, NullType> function) {
-        function.apply(effect);
+    public void applyFunction(Consumer<EffectStrategy> function) {
+        function.accept(effect);
         if(effect instanceof EffectDecorators){
             ((EffectDecorators) effect).applyFunction(function);
         }
