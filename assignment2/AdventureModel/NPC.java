@@ -15,6 +15,7 @@ public class NPC {
     String name;
     String message;
     SideQuest sideQuest;
+    boolean doSideQuest = false;
     ArrayList<String> mainAction = new ArrayList<>(Arrays.asList("CHAT", "SIDEQUEST"));
 
     public NPC(Room room, String name, String message){
@@ -29,12 +30,9 @@ public class NPC {
             } else if (Objects.equals(actionName[1], "SIDEQUEST")){
                 if (sideQuest==null){
                     return "I don't have any side quest for you";
-                } else if (sideQuest instanceof SQ_Question) {
-                    SQ_Question casted_SQ_Question = (SQ_Question) sideQuest;
-                    return casted_SQ_Question.getQuestion();
-                } else if (sideQuest instanceof SQ_Object) {
-                    SQ_Object casted_SQ_Object = (SQ_Object) sideQuest;
-                    return casted_SQ_Object.getQuestion();
+                } else {
+                    this.doSideQuest = true;
+                    return sideQuest.getQuestion();
                 }
             }
         }

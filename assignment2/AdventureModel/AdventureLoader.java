@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,6 +46,18 @@ public class AdventureLoader {
         SQFactory sqFactory = new SQFactory();
         sqFactory.SQGenerator(this.game.npcHashMap, buff);
     }
+    public void parseHint() throws IOException {
+        String sqFileName = this.adventureName + "/hints.txt";
+        BufferedReader buff = new BufferedReader(new FileReader(sqFileName));
+        while (buff.ready()){
+            String[] temp = buff.readLine().split(": ");
+            if (this.game.hints.containsKey(Integer.valueOf(temp[0]))){
+                this.game.hints.get(Integer.valueOf(temp[0])).add(temp[1]);
+            } else {
+                this.game.hints.put(Integer.valueOf(temp[0]), new ArrayList<>(Arrays.asList(temp[1])));
+            }
+        }
+    }
      /**
      * Load game from directory
      */
@@ -56,6 +70,7 @@ public class AdventureLoader {
         parseSynonyms();
         parseNPC();
         parseSQ();
+        parseHint();
         this.game.setHelpText(parseOtherFile("help"));
     }
 

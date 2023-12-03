@@ -1,4 +1,4 @@
-the final room before winning the game is room 8
-don't ever go to room 9 if you don't want to start all over again
-if you have BIRD, you will win this game faster
-the CHEST is useless, try to bargain it with an NPC
+5: the final room before winning the game is room 8
+5: don't ever go to room 9 if you don't want to start all over again
+1: if you have BIRD, you will win this game faster
+3: the CHEST is useless, try to bargain it with an NPC
