@@ -25,7 +25,15 @@ public class PlayerHealthTest {
     void testObservers() {
         PlayerHealth playerHealth = new PlayerHealth(100, 100);
 
-        HealthObserver observer = new HealthObserver(playerHealth);
+        final boolean[] onChangeEntered = {false};
+        HealthObserver observer = new HealthObserver(playerHealth) {
+            @Override
+            public void onChange() {
+                onChangeEntered[0] = true;
+            }
+        };
+
+        assert onChangeEntered[0];
 
         assert observer.getHealth() == 100;
 
@@ -64,7 +72,12 @@ public class PlayerHealthTest {
 
         // access through observer
 
-        HealthObserver observer = new HealthObserver(game.getPlayer().health);
+        HealthObserver observer = new HealthObserver(game.getPlayer().health) {
+            @Override
+            public void onChange() {
+                // do nothing
+            }
+        };
 
         assert observer.getHealth() == 0;
         assert !observer.isAlive();

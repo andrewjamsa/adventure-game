@@ -1,6 +1,6 @@
 package AdventureModel.PlayerHealth;
 
-public class HealthObserver implements Observer {
+public abstract class HealthObserver implements Observer {
 
     /**
      * The health value of the player.
@@ -11,6 +11,11 @@ public class HealthObserver implements Observer {
      * The subject that is being observed.
      */
     private HealthObservable subject;
+
+    /**
+     * This method is called when the health value of the player changes.
+     */
+    protected abstract void onChange();
 
     public HealthObserver(HealthObservable subject) {
         this.subject = subject;
@@ -61,5 +66,7 @@ public class HealthObserver implements Observer {
     @Override
     public void update(Integer value) {
         this.health = value;
+        this.onChange(); // call onUpdate method
     }
+
 }

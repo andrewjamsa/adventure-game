@@ -62,10 +62,25 @@ public class Player implements Serializable {
      * @return true if object is in inventory, false otherwise
      */
     public boolean checkIfObjectInInventory(String s) {
-        for (int i = 0; i < this.inventory.size(); i++) {
-            if (this.inventory.get(i).getName().equals(s)) return true;
+        for(int i = 0; i<this.inventory.size();i++){
+            if(this.inventory.get(i).getName().equalsIgnoreCase(s)) return true;
         }
         return false;
+    }
+
+    /**
+     * getObject
+     * __________________________
+     * This method gets the object in player's inventory with the name s.
+     *
+     * @param s the name of the object
+     * @return return the AdventureObject with name s if it exists, null otherwise
+     */
+    public AdventureObject getObject(String s) {
+        for (int i = 0; i < this.inventory.size(); i++) {
+            if (this.inventory.get(i).getName().equals(s)) return this.inventory.get(i);
+        }
+        return null;
     }
 
     /**
@@ -134,12 +149,11 @@ public class Player implements Serializable {
         }
     }
 
-    /**
-     * This method returns whether the player is alive or not.
+    /** This method returns whether the player is alive or not.
      *
      * @return true if the player is alive, false otherwise
      */
-    private boolean isAlive() {
+    public boolean isAlive() {
         return this.health.getObservableHealth() > 0;
     }
 
@@ -178,5 +192,4 @@ public class Player implements Serializable {
     public Integer getHealthValue() {
         return this.health.getObservableHealth();
     }
-
 }

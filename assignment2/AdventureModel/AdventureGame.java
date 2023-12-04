@@ -1,5 +1,8 @@
 package AdventureModel;
 
+import AdventureModel.SideQuests.SQ_Object;
+import AdventureModel.SideQuests.SQ_Question;
+
 import java.io.*;
 import java.util.*;
 
@@ -11,8 +14,12 @@ public class AdventureGame implements Serializable {
     private String helpText; //A variable to store the Help text of the game. This text is displayed when the user types "HELP" command.
     private final HashMap<Integer, Room> rooms; //A list of all the rooms in the game.
     private HashMap<String, String> synonyms = new HashMap<>(); //A HashMap to store synonyms of commands.
-    private final String[] actionVerbs = {"QUIT", "INVENTORY", "TAKE", "DROP"}; //List of action verbs (other than motions) that exist in all games. Motion vary depending on the room and game.
+    private final String[] actionVerbs = {"HINT", "NPC", "QUIT", "INVENTORY", "TAKE", "DROP", "INSPECT"}; //List of action verbs (other than motions) that exist in all games. Motion vary depending on the room and game.
+
     public Player player; //The Player of the game.
+    public HashMap<Integer, NPC> npcHashMap = new HashMap<>();
+    public HashMap<Integer, ArrayList<String>> hints = new HashMap<>();
+    public boolean doSideQuest = false;
 
     public AdventureGame(String name) {
         this(name, 100, 100); // THESE ARE THE DEFAULT VALUES, values should normally be set in game file or due to difficulty
@@ -100,7 +107,6 @@ public class AdventureGame implements Serializable {
      * @return false, if move results in death or a win (and game is over).  Else, true.
      */
     public boolean movePlayer(String direction) {
-
         direction = direction.toUpperCase();
         PassageTable motionTable = this.player.getCurrentRoom().getMotionTable(); //where can we move?
         if (!motionTable.optionExists(direction)) return true; //no move
@@ -150,7 +156,11 @@ public class AdventureGame implements Serializable {
         String[] inputArray = tokenize(command); //look up synonyms
 
         PassageTable motionTable = this.player.getCurrentRoom().getMotionTable(); //where can we move?
-
+        if (doSideQuest){
+            doSideQuest=false;
+            NPC npcInCharge = this.npcHashMap.get(this.player.getCurrentRoom().getRoomNumber());
+            return npcInCharge.action(player, inputArray);
+        }
         if (motionTable.optionExists(inputArray[0])) {
             if (!movePlayer(inputArray[0])) {
                 if (this.player.getCurrentRoom().getMotionTable().getDirection().get(0).getDestinationRoom() == 0)
@@ -184,9 +194,34 @@ public class AdventureGame implements Serializable {
                 } else {
                     return "THIS OBJECT IS NOT IN YOUR INVENTORY:\n " + inputArray[1];
                 }
+            } else if (inputArray[0].equals("NPC")) {
+                if (!this.npcHashMap.containsKey(this.player.getCurrentRoom().getRoomNumber())){
+                    return "No NPC is available here";
+                }
+                NPC npcInCharge = this.npcHashMap.get(this.player.getCurrentRoom().getRoomNumber());
+                if (inputArray.length==2 && Objects.equals(inputArray[1], "SIDEQUEST")){
+                    doSideQuest = true;
+                }
+                return npcInCharge.action(player, inputArray);
+            } else if (inputArray[0].equals("HINT")) {
+                Random rand = new Random();
+                if (hints.containsKey(this.player.getCurrentRoom().getRoomNumber())){
+                ArrayList<String> hintsList = hints.get(this.player.getCurrentRoom().getRoomNumber());
+                int randomNumber = rand.nextInt(hintsList.size());
+                return hintsList.get(randomNumber);} else {
+                    return "no hint is available for this room";
+                }
+            }else if (inputArray[0].equals("INSPECT") && inputArray.length == 2) {
+                if (this.player.checkIfObjectInInventory(inputArray[1])) {
+                    return "YOU HAVE INSPECTED:\n " + player.getObject(inputArray[1]).getDescription();
+                } else {
+                    return "THIS OBJECT IS NOT IN YOUR INVENTORY:\n " + inputArray[1];
+
+                }
             }
         }
         return "INVALID COMMAND.";
+
     }
 
     /**
