@@ -114,7 +114,7 @@ public class AdventureGameView {
     private PlayerHealthBar healthBar;
 
     public AdventureGameView(AdventureGame model, Stage stage) {
-        this(model, stage, 16);
+        this(model, stage, 16); // default fontsize as 16
     }
 
     public AdventureGameView(AdventureGame model, Stage stage, int fontSize) {
@@ -194,7 +194,7 @@ public class AdventureGameView {
         timerLabel.setId("Timer");
         timerLabel.setAlignment(Pos.CENTER);
         timerLabel.setPrefSize(100, 50);
-        timerLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        timerLabel.setFont(Font.font("Arial", FontWeight.BOLD, this.getFontSize() - 2));
         timerLabel.setStyle("-fx-background-color: white; -fx-text-fill: #17871b;");
 
         HBox topButtons = new HBox();
