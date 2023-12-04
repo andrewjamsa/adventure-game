@@ -1,7 +1,8 @@
 type: QNA
 name: NPC-no-1
 question: what is the capital of France?
-hint: congratulations! here's a hint: UNKNOWN HINT
+hint: congratulations! here's a hint: If you have BIRD, it will be useful throughout your journey.
+correct: Paris
 incorrect: wrongggg!! try again.
 
 type: OBJECT

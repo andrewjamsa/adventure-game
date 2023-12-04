@@ -1,5 +1,6 @@
 package AdventureModel.NPCStates;
 
+import AdventureModel.AdventureObject;
 import AdventureModel.NPC;
 import AdventureModel.Player;
 
@@ -15,4 +16,11 @@ public interface NPCState {
         return actionList;
     }
     public default String getNPCState() {return "NPCState";}
+    public default void takeObject(Player player, AdventureObject object){return;}
+    public default void giveObject(Player player, AdventureObject object){return;}
+
+    public default void giveReward(Player player, String object) {
+        return;
+    }
+
 }
