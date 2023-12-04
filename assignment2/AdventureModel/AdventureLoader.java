@@ -5,10 +5,14 @@ import AdventureModel.Effects.EffectStrategy;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Collections;
 
 /**
  * Class AdventureLoader. Loads an adventure from files.
@@ -31,6 +35,30 @@ public class AdventureLoader {
         this.adventureName = directoryName;
     }
 
+    public void parseNPC() throws IOException {
+        String npcFileName = this.adventureName + "/npc.txt";
+        BufferedReader buff = new BufferedReader(new FileReader(npcFileName));
+        NPCFactory npcFactory = new NPCFactory();
+        this.game.npcHashMap = npcFactory.NPCGenerator(buff, this.game.getRooms());
+    }
+    public void parseSQ() throws IOException {
+        String sqFileName = this.adventureName + "/side_quest.txt";
+        BufferedReader buff = new BufferedReader(new FileReader(sqFileName));
+        SQFactory sqFactory = new SQFactory();
+        sqFactory.SQGenerator(this.game.npcHashMap, buff);
+    }
+    public void parseHint() throws IOException {
+        String hintFileName = this.adventureName + "/hints.txt";
+        BufferedReader buff = new BufferedReader(new FileReader(hintFileName));
+        while (buff.ready()){
+            String[] temp = buff.readLine().split(": ");
+            if (this.game.hints.containsKey(Integer.valueOf(temp[0]))){
+                this.game.hints.get(Integer.valueOf(temp[0])).add(temp[1]);
+            } else {
+                this.game.hints.put(Integer.valueOf(temp[0]), new ArrayList<>(Collections.singletonList(temp[1])));
+            }
+        }
+    }
      /**
      * Load game from directory
      */
@@ -41,6 +69,9 @@ public class AdventureLoader {
         parseRooms();
         parseObjects();
         parseSynonyms();
+        parseNPC();
+        parseSQ();
+        parseHint();
         this.game.setHelpText(parseOtherFile("help"));
     }
 

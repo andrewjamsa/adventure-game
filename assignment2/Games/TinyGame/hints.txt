@@ -1,0 +1,4 @@
+5: the goal can be reached towards southeast
+5: don't ever pass the curtain without complete objects
+1: don't move too much, be more efficient
+3: the CHEST is useless, try to bargain it with an NPC

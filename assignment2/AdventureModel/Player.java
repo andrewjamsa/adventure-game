@@ -62,8 +62,8 @@ public class Player implements Serializable {
      * @return true if object is in inventory, false otherwise
      */
     public boolean checkIfObjectInInventory(String s) {
-        for (int i = 0; i < this.inventory.size(); i++) {
-            if (this.inventory.get(i).getName().equals(s)) return true;
+        for(int i = 0; i<this.inventory.size();i++){
+            if(this.inventory.get(i).getName().equalsIgnoreCase(s)) return true;
         }
         return false;
     }
@@ -149,7 +149,6 @@ public class Player implements Serializable {
         }
     }
 
-
     /** This method returns whether the player is alive or not.
      *
      * @return true if the player is alive, false otherwise
@@ -193,5 +192,4 @@ public class Player implements Serializable {
     public Integer getHealthValue() {
         return this.health.getObservableHealth();
     }
-
 }

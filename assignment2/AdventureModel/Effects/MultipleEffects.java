@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class MultipleEffects implements EffectDecorators{
@@ -28,7 +27,6 @@ public class MultipleEffects implements EffectDecorators{
     public String getDescription() {
         return effects.stream().map(EffectStrategy::getDescription).collect(Collectors.joining(", "));
     }
-
     @Override
     public void applyFunction(Consumer<EffectStrategy> function) {
         for (EffectStrategy effect:effects){

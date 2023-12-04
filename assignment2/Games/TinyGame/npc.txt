@@ -1,0 +1,14 @@
+NPC-no-1
+object: gems-green peridot crystal
+intro: hi, i'm NPC-no-1, I have this gems that I don't use. do you want it? if so, you have to do the things I'm going to say.
+1
+
+NPC-no-2
+object: torch-a wooden-based torch
+intro: hi, i'm NPC-no-2, fun fact about me is that I can see in a dark. All the torches available here are useless.
+2
+
+NPC-no-3
+object: ipad-an old ipad from 1000th century
+intro: hola, i'm NPC-no-3 amigos! I found an ipad just now, but I know this garbage is useless in this era.
+3
