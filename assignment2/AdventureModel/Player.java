@@ -153,7 +153,7 @@ public class Player implements Serializable {
      *
      * @return true if the player is alive, false otherwise
      */
-    private boolean isAlive() {
+    public boolean isAlive() {
         return this.health.getObservableHealth() > 0;
     }
 
