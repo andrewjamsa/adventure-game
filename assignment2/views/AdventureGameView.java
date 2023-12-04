@@ -3,6 +3,9 @@ package views;
 import AdventureModel.AdventureGame;
 import AdventureModel.AdventureObject;
 import AdventureModel.PlayerHealth.PlayerHealthBar;
+import ColorWay.ColorWay;
+import ColorWay.ColorWayFactory;
+import com.sun.scenario.Settings;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -43,7 +46,7 @@ public class AdventureGameView {
 
     AdventureGame model; //model of the game
     Stage stage; //stage on which all is rendered
-    Button saveButton, loadButton, helpButton; //buttons
+    Button saveButton, loadButton, helpButton, settingsButton; //buttons
     Label timerLabel;
     Boolean helpToggle = false; //is help on display?
 
@@ -59,6 +62,13 @@ public class AdventureGameView {
 
     private ArrayList<Node> grid11 = new ArrayList<>();
     private VBox helpVBox = null;
+
+    private ColorWay gameColorWay;
+    private String gameFont;
+    private String colorWayName;
+    private ColorWayFactory gameColorWayFactory;
+    private boolean settingsToggle = false;
+
     private Timer timer = new Timer();
     private TimerTask timerTask = new TimerTask() {
         @Override
@@ -108,7 +118,9 @@ public class AdventureGameView {
     public AdventureGameView(AdventureGame model, Stage stage) {
         this.model = model;
         this.stage = stage;
-        intiUI();
+        stage.requestFocus();
+        SettingsView settingsView = new SettingsView(this);
+
     }
 
     /**
@@ -125,10 +137,13 @@ public class AdventureGameView {
         objectsInRoom.setSpacing(10);
         objectsInRoom.setAlignment(Pos.TOP_CENTER);
 
+        this.gameColorWayFactory = new ColorWayFactory();
+        this.gameColorWay = gameColorWayFactory.getColorWay(colorWayName);
+
         // GridPane, anyone?
         gridPane.setPadding(new Insets(20));
         gridPane.setBackground(new Background(new BackgroundFill(
-                Color.valueOf("#000000"),
+                gameColorWay.getBoardColor(),
                 new CornerRadii(0),
                 new Insets(0)
         )));
@@ -182,9 +197,9 @@ public class AdventureGameView {
         topButtons.setAlignment(Pos.CENTER);
 
         inputTextField = new TextField();
-        inputTextField.setFont(new Font("Arial", 16));
+        inputTextField.setFont(new Font(this.gameFont, 16));
         inputTextField.setFocusTraversable(true);
-
+        inputTextField.setStyle(" -fx-text-fill: #"+ gameColorWay.getTextBoxColor().toString().substring(2)+";");
         inputTextField.setAccessibleRole(AccessibleRole.TEXT_AREA);
         inputTextField.setAccessibleRoleDescription("Text Entry Box");
         inputTextField.setAccessibleText("Enter commands in this box.");
@@ -194,13 +209,14 @@ public class AdventureGameView {
         //labels for inventory and room items
         Label objLabel = new Label("Objects in Room");
         objLabel.setAlignment(Pos.CENTER);
-        objLabel.setStyle("-fx-text-fill: white;");
-        objLabel.setFont(new Font("Arial", 16));
+        objLabel.setStyle("-fx-text-fill:#"+ gameColorWay.getTextColor().toString().substring(2)+" ;");
+        objLabel.setFont(new Font(this.gameFont, 16));
 
         Label invLabel = new Label("Your Inventory");
         invLabel.setAlignment(Pos.CENTER);
-        invLabel.setStyle("-fx-text-fill: white;");
-        invLabel.setFont(new Font("Arial", 16));
+        invLabel.setStyle("-fx-text-fill: #"+ gameColorWay.getTextColor().toString().substring(2)+";");
+        invLabel.setFont(new Font(this.gameFont, 16));
+
 
         //add all the widgets to the GridPane
         gridPane.add(objLabel, 0, 0, 1, 1);  // Add label
@@ -208,15 +224,16 @@ public class AdventureGameView {
         gridPane.add(invLabel, 2, 0, 1, 1);  // Add label
 
         Label commandLabel = new Label("What would you like to do?");
-        commandLabel.setStyle("-fx-text-fill: white;");
-        commandLabel.setFont(new Font("Arial", 16));
+        commandLabel.setStyle("-fx-text-fill:#"+this.getColorWay().getTextColor().toString().substring(2)+";");
+        commandLabel.setFont(new Font(this.gameFont, 16));
 
         updateScene(""); //method displays an image and whatever text is supplied
         updateItems(); //update items shows inventory and objects in rooms
 
+
         // adding the text area and submit button to a VBox
         VBox textEntry = new VBox();
-        textEntry.setStyle("-fx-background-color: #000000;");
+        textEntry.setStyle("-fx-background-color: #"+ gameColorWay.getBoardColor().toString().substring(2)+";");
         textEntry.setPadding(new Insets(20, 20, 20, 20));
         textEntry.getChildren().addAll(commandLabel, inputTextField);
         textEntry.setSpacing(10);
@@ -237,10 +254,11 @@ public class AdventureGameView {
 
         // Render everything
         var scene = new Scene(gridPane, 1000, 800);
-        scene.setFill(Color.BLACK);
+        scene.setFill(gameColorWay.getBoardColor());
         this.stage.setScene(scene);
         this.stage.setResizable(false);
         this.stage.show();
+
     }
 
     /**
@@ -272,8 +290,8 @@ public class AdventureGameView {
      */
     private void customizeButton(Button inputButton, int w, int h) {
         inputButton.setPrefSize(w, h);
-        inputButton.setFont(new Font("Arial", 16));
-        inputButton.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
+        inputButton.setFont(new Font(this.gameFont, 16));
+        inputButton.setStyle("-fx-background-color: #"+ gameColorWay.getButtonColor().toString().substring(2)+"; -fx-text-fill: #"+ gameColorWay.getButtonTextColor().toString().substring(2)+";");
     }
 
     /**
@@ -407,6 +425,7 @@ public class AdventureGameView {
      * current room.
      */
     private void showCommands() {
+        roomDescLabel.setStyle("-fx-text-fill: #"+gameColorWay.getTextColor().toString().substring(2)+";");
         roomDescLabel.setText("The possible moves are: " + model.player.getCurrentRoom().getCommands());
     }
 
@@ -430,10 +449,11 @@ public class AdventureGameView {
         roomDescLabel.setPrefHeight(500);
         roomDescLabel.setTextOverrun(OverrunStyle.CLIP);
         roomDescLabel.setWrapText(true);
+        roomDescLabel.setStyle("-fx-text-fill: #"+ gameColorWay.getTextColor().toString().substring(2)+";");
         VBox roomPane = new VBox(roomImageView, roomDescLabel);
         roomPane.setPadding(new Insets(10));
         roomPane.setAlignment(Pos.TOP_CENTER);
-        roomPane.setStyle("-fx-background-color: #000000;");
+        roomPane.setStyle("-fx-background-color: #"+ gameColorWay.getBoardColor().toString().substring(2)+";");
 
         gridPane.add(roomPane, 1, 1);
         stage.sizeToScene();
@@ -459,7 +479,7 @@ public class AdventureGameView {
             else roomDescLabel.setText(roomDesc);
         } else roomDescLabel.setText(textToDisplay);
         roomDescLabel.setStyle("-fx-text-fill: white;");
-        roomDescLabel.setFont(new Font("Arial", 16));
+        roomDescLabel.setFont(new Font(this.gameFont, 16));
         roomDescLabel.setAlignment(Pos.CENTER);
     }
 
@@ -511,7 +531,7 @@ public class AdventureGameView {
 
         ScrollPane scO = new ScrollPane(objectsInRoom);
         scO.setPadding(new Insets(10));
-        scO.setStyle("-fx-background: #000000; -fx-background-color:transparent;");
+        scO.setStyle("-fx-background: #"+ gameColorWay.getBoardColor().toString().substring(2)+"; -fx-background-color:transparent;");
         scO.setFitToWidth(true);
         gridPane.add(scO, 0, 1);
         for (AdventureObject element : model.player.getCurrentRoom().objectsInRoom) {
@@ -549,7 +569,7 @@ public class AdventureGameView {
         // --------------------------------------------------------------------------
         ScrollPane scI = new ScrollPane(objectsInInventory);
         scI.setFitToWidth(true);
-        scI.setStyle("-fx-background: #000000; -fx-background-color:transparent;");
+        scI.setStyle("-fx-background: #"+ gameColorWay.getBoardColor().toString().substring(2)+"; -fx-background-color:transparent;");
         gridPane.add(scI, 2, 1);
 
         for (AdventureObject element : model.player.inventory) {
@@ -581,12 +601,19 @@ public class AdventureGameView {
             objectsInInventory.getChildren().add(button);
         }
     }
+    /**
+     * This method updates the helpVBox.
+     *
+     *
+     */
 
     private void updateHelpVBox() {
         if (helpVBox == null) {
             TextArea helpTextArea = new TextArea();
             helpTextArea.setEditable(false);
             helpTextArea.setPrefHeight(1000);
+            helpTextArea.setStyle("-fx-text-fill: #"+ gameColorWay.getTextBoxColor().toString().substring(2)+";");
+            helpTextArea.setFont(new Font(this.gameFont, 16));
             helpTextArea.setText(model.getInstructions());
             helpVBox = new VBox();
             helpVBox.getChildren().add(helpTextArea);
@@ -694,5 +721,60 @@ public class AdventureGameView {
             mediaPlayer.stop(); //shush!
             mediaPlaying = false;
         }
+    }
+    /**
+     * This method gets the games colorway.
+     *
+     * @return the games colorway
+     */
+    public ColorWay getColorWay() {
+        return gameColorWay;
+    }
+    /**
+     * This method sets the games colorway.
+     *
+     *
+     */
+    public void setColorWay(ColorWay colorWay) {
+        this.gameColorWay = colorWay;
+    }
+    /**
+     * This method gets the games font.
+     *
+     * @return the games font
+     */
+    public String getGameFont() {
+        return gameFont;
+    }
+    /**
+     * This method sets the games font.
+     *
+     *
+     */
+    public void setGameFont(String gameFont) {
+        this.gameFont = gameFont;
+    }
+    /**
+     * This method gets the games colorway name.
+     *
+     * @return the games colorway name
+     */
+    public String getColorWayName() {
+        return colorWayName;
+    }
+    /**
+     * This method sets the games colorway name.
+     *
+     *
+     */
+    public void setColorWayName(String colorWayName) {
+        this.colorWayName = colorWayName;
+    }
+    /**
+     * This method sets the settings toggle.
+     *
+     */
+    public void setSettingsToggle(boolean settingsToggle) {
+        this.settingsToggle = settingsToggle;
     }
 }

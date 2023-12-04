@@ -8,19 +8,21 @@ import javafx.scene.paint.Color;
  */
 
 public class LightColorWay implements ColorWay {
-    Color boardColor = Color.WHITE;
-    Color textColor = Color.BLACK;
-    Color buttonColor = Color.LIGHTBLUE;
-    Color textBoxColor = Color.WHITE;
+    Color boardColor;
+    Color textColor;
+    Color buttonColor;
+    Color textBoxColor;
+    Color buttonTextColor;
 
     /**
-     * This method is the constructor for the DarkColorWay class.
+     * This method is the constructor for the LightColorWay class.
      */
     public LightColorWay() {
-        this.boardColor = Color.WHITE;
+        this.boardColor = Color.LIGHTGRAY;
         this.textColor = Color.BLACK;
         this.buttonColor = Color.LIGHTBLUE;
-        this.textBoxColor = Color.WHITE;
+        this.textBoxColor = Color.BLACK;
+        this.buttonTextColor = Color.WHITE;
     }
 
     @Override
@@ -53,6 +55,16 @@ public class LightColorWay implements ColorWay {
     @Override
     public Color getTextBoxColor() {
         return this.textBoxColor;
+    }
+
+    /**
+     * This method returns the color of the button text.
+     *
+     * @return the color of the button text
+     */
+    @Override
+    public Color getButtonTextColor() {
+        return this.buttonTextColor;
     }
 
 }
