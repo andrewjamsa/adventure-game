@@ -227,7 +227,7 @@ public class AdventureGameView {
         invLabel.setStyle("-fx-text-fill: #" + gameColorWay.getTextColor().toString().substring(2) + ";");
         invLabel.setFont(new Font(this.gameFont, this.getFontSize()));
 
-
+        
         //add all the widgets to the GridPane
         gridPane.add(objLabel, 0, 0, 1, 1);  // Add label
         gridPane.add(topButtons, 1, 0, 1, 1);  // Add buttons
