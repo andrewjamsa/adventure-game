@@ -29,4 +29,11 @@ public interface ColorWay {
      * @return the color of the text boxes
      */
     public Color getTextBoxColor();
+
+    /**
+     * This method returns the color of the button text.
+     *
+     * @return the color of the button text
+     */
+    public Color getButtonTextColor();
 }

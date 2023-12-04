@@ -14,6 +14,7 @@ public class DarkColorWay implements ColorWay {
     Color textColor;
     Color buttonColor;
     Color textBoxColor;
+    Color buttonTextColor;
 
     /**
      * This method is the constructor for the DarkColorWay class.
@@ -22,7 +23,8 @@ public class DarkColorWay implements ColorWay {
         this.boardColor = Color.BLACK;
         this.textColor = Color.WHITE;
         this.buttonColor = Color.GREEN;
-        this.textBoxColor = Color.WHITE;
+        this.textBoxColor = Color.BLACK;
+        this.buttonTextColor = Color.WHITE;
     }
 
 
@@ -61,4 +63,15 @@ public class DarkColorWay implements ColorWay {
     public Color getTextColor() {
         return this.textColor;
     }
+
+    /**
+     * This method returns the color of the button text.
+     *
+     * @return the color of the button text
+     */
+    @Override
+    public Color getButtonTextColor() {
+        return this.buttonTextColor;
+    }
+
 }

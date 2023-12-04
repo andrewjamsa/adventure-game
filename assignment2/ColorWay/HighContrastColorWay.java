@@ -3,18 +3,20 @@ package ColorWay;
 import javafx.scene.paint.Color;
 
 public class HighContrastColorWay implements ColorWay{
-    Color boardColor = Color.BLACK;
-    Color textColor = Color.BLUE;
-    Color buttonColor = Color.YELLOW;
-    Color textBoxColor = Color.WHITE;
+    Color boardColor;
+    Color textColor;
+    Color buttonColor;
+    Color textBoxColor;
+    Color buttonTextColor;
     /**
-     * This method is the constructor for the DarkColorWay class.
+     * This method is the constructor for the HighContrastColorWay class.
      */
     public HighContrastColorWay() {
-        this.boardColor = Color.BLACK;
+        this.boardColor = Color.WHITE;
         this.textColor = Color.BLUE;
-        this.buttonColor = Color.YELLOW;
-        this.textBoxColor = Color.WHITE;
+        this.buttonColor = Color.BLUE;
+        this.textBoxColor = Color.BLUE;
+        this.buttonTextColor = Color.WHITE;
     }
 /**
      * This method returns the color of the board.
@@ -47,5 +49,15 @@ public class HighContrastColorWay implements ColorWay{
      */
     public Color getTextBoxColor() {
         return this.textBoxColor;
+    }
+
+    /**
+     * This method returns the color of the button text.
+     *
+     * @return the color of the button text
+     */
+    @Override
+    public Color getButtonTextColor() {
+        return this.buttonTextColor;
     }
 }
