@@ -18,7 +18,7 @@ import java.util.Date;
 
 /**
  * Class SaveView.
- *
+ * <p>
  * Saves Serialized adventure games.
  */
 public class SaveView {
@@ -44,33 +44,36 @@ public class SaveView {
         dialog.initOwner(adventureGameView.stage);
         VBox dialogVbox = new VBox(20);
         dialogVbox.setPadding(new Insets(20, 20, 20, 20));
-        dialogVbox.setStyle("-fx-background-color: #121212;");
+        dialogVbox.setStyle("-fx-background-color: #" + this.adventureGameView.getColorWay().getBoardColor().toString().substring(2) + ";");
         saveGameLabel.setId("SaveGame"); // DO NOT MODIFY ID
         saveFileErrorLabel.setId("SaveFileErrorLabel");
         saveFileNameTextField.setId("SaveFileNameTextField");
-        saveGameLabel.setStyle("-fx-text-fill: #e8e6e3;");
-        saveGameLabel.setFont(new Font(this.adventureGameView.getFontSize()));
-        saveFileErrorLabel.setStyle("-fx-text-fill: #e8e6e3;");
+
+        saveGameLabel.setStyle("-fx-text-fill: #" + this.adventureGameView.getColorWay().getTextColor().toString().substring(2) + ";");
+        saveGameLabel.setFont(new Font(this.adventureGameView.getGameFont(), this.adventureGameView.getFontSize()));
+        saveFileErrorLabel.setStyle("-fx-text-fill: #" + this.adventureGameView.getColorWay().getTextColor().toString().substring(2) + ";");
         saveFileErrorLabel.setFont(new Font(this.adventureGameView.getFontSize()));
-        saveFileNameTextField.setStyle("-fx-text-fill: #000000;");
-        saveFileNameTextField.setFont(new Font(this.adventureGameView.getFontSize()));
+        saveFileNameTextField.setStyle("-fx-text-fill: #" + this.adventureGameView.getColorWay().getTextBoxColor().toString().substring(2) + ";");
+        saveFileNameTextField.setFont(new Font(this.adventureGameView.getGameFont(), this.adventureGameView.getFontSize()));
 
         String gameName = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()) + ".ser";
         saveFileNameTextField.setText(gameName);
 
         saveGameButton = new Button("Save board");
         saveGameButton.setId("SaveBoardButton"); // DO NOT MODIFY ID
-        saveGameButton.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
+        saveGameButton.setStyle("-fx-background-color: #" + this.adventureGameView.getColorWay().getButtonColor().toString().substring(2) + "; -fx-text-fill:#" + this.adventureGameView.getColorWay().getButtonTextColor().toString().substring(2) + ";");
         saveGameButton.setPrefSize(200, 50);
-        saveGameButton.setFont(new Font(this.adventureGameView.getFontSize()));
+        saveGameButton.setFont(new Font(this.adventureGameView.getGameFont(), this.adventureGameView.getFontSize()));
         AdventureGameView.makeButtonAccessible(saveGameButton, "save game", "This is a button to save the game", "Use this button to save the current game.");
         saveGameButton.setOnAction(e -> saveGame());
 
         closeWindowButton = new Button("Close Window");
         closeWindowButton.setId("closeWindowButton"); // DO NOT MODIFY ID
-        closeWindowButton.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
+        closeWindowButton.setStyle("-fx-background-color: #" + this.adventureGameView.getColorWay().getButtonColor().toString().substring(2) + "; -fx-text-fill:#" + this.adventureGameView.getColorWay().getButtonTextColor().toString().substring(2) + ";");
         closeWindowButton.setPrefSize(200, 50);
-        closeWindowButton.setFont(new Font(this.adventureGameView.getFontSize()));
+
+        closeWindowButton.setFont(new Font(this.adventureGameView.getGameFont(), this.adventureGameView.getFontSize()));
+
         closeWindowButton.setOnAction(e -> dialog.close());
         AdventureGameView.makeButtonAccessible(closeWindowButton, "close window", "This is a button to close the save game window", "Use this button to close the save game window.");
 
@@ -94,13 +97,13 @@ public class SaveView {
      */
     private void saveGame() {
         Serializable content = adventureGameView.model;             // initialize content that's in the ser file
-        String fileName = "../assignment2/Games/Saved" + File.separator+ saveFileNameTextField.getText();   // initialize variable for the file name that's saved to Games/Saved
+        String fileName = "../assignment2/Games/Saved" + File.separator + saveFileNameTextField.getText();   // initialize variable for the file name that's saved to Games/Saved
         File files = new File("../assignment2/Games/Saved", saveFileNameTextField.getText());
-        if (!saveFileNameTextField.getText().substring(saveFileNameTextField.getText().length() - 4).equals(".ser")){
+        if (!saveFileNameTextField.getText().substring(saveFileNameTextField.getText().length() - 4).equals(".ser")) {
             saveFileErrorLabel.setText(saveFileNotSerError);
             return;
         }
-        if (files.exists()){
+        if (files.exists()) {
             saveFileErrorLabel.setText(saveFileExistsError);
             return;
         }
