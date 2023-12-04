@@ -12,6 +12,11 @@ public abstract class HealthObserver implements Observer {
      */
     private HealthObservable subject;
 
+    /**
+     * This method is called when the health value of the player changes.
+     */
+    protected abstract void onChange();
+
     public HealthObserver(HealthObservable subject) {
         this.subject = subject;
 
@@ -64,5 +69,4 @@ public abstract class HealthObserver implements Observer {
         this.onChange(); // call onUpdate method
     }
 
-    public abstract void onChange();
 }

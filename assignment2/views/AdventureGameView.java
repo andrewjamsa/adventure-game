@@ -174,7 +174,13 @@ public class AdventureGameView {
         gridPane.add(textEntry, 0, 2, 3, 1);
 
         // add the health bar
-        healthBar = new PlayerHealthBar(model.getPlayer());
+        healthBar = new PlayerHealthBar(model.getPlayer(), () -> {
+
+            if (!healthBar.isAlive()) {
+                updateScene("PLAYER DIED! GAME OVER.");
+            }
+            return null;
+        });
 
         // add the health bar to the gridpane
         gridPane.add(healthBar.getBar(), 1, 3, 1, 1);
@@ -186,7 +192,6 @@ public class AdventureGameView {
         this.stage.setResizable(false);
         this.stage.show();
     }
-
 
     /**
      * makeButtonAccessible
@@ -285,6 +290,11 @@ public class AdventureGameView {
      */
     private void submitEvent(String text) {
 
+        if (!this.model.getPlayer().isAlive()) {
+            updateScene("PLAYER DIED! GAME OVER.");
+            return;
+        }
+
         text = text.strip(); //get rid of white space
         stopArticulation(); //if speaking, stop
 
@@ -340,7 +350,6 @@ public class AdventureGameView {
     private void showCommands() {
         roomDescLabel.setText("The possible moves are: " + model.player.getCurrentRoom().getCommands());
     }
-
 
     /**
      * updateScene
@@ -433,7 +442,6 @@ public class AdventureGameView {
      * folders of the given adventure game.
      */
     public void updateItems() {
-
         //write some code here to add images of objects in a given room to the objectsInRoom Vbox
         //write some code here to add images of objects in a player's inventory room to the objectsInInventory Vbox
         //please use setAccessibleText to add "alt" descriptions to your images!
