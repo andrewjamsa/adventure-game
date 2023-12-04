@@ -33,8 +33,10 @@ public class SettingsView {
     private ListView<String> colorList;
     private ListView<String> fontList;
     private ListView<String> fontSizeList;
+    private ListView<String> difficultyList;
     private Button changeFontButton;
     private Button changeFontSizeButton;
+    private Button changeDifficultyButton;
     private ColorWayFactory settingsColorWayFactory;
 
     /**
@@ -66,6 +68,11 @@ public class SettingsView {
         changeFontSizeButton.setId("Change Font Size"); // DO NOT MODIFY ID
         AdventureGameView.makeButtonAccessible(changeFontSizeButton, "select font size", "This is the button to select a font size", "Use this button to indicate the size of font you would like to load.");
 
+        // --- Difficulty ---
+        changeDifficultyButton = new Button("Change Difficulty");
+        changeDifficultyButton.setId("Change Difficulty"); // DO NOT MODIFY ID
+        AdventureGameView.makeButtonAccessible(changeDifficultyButton, "select difficulty", "This is the button to select a difficulty", "Use this button to indicate the difficulty you would like to load.");
+
         colorList = new ListView<>(); //to hold all the file names
         colorList.setId("ColorList");  // DO NOT MODIFY ID
         colorList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
@@ -89,6 +96,14 @@ public class SettingsView {
         fontSizeList.getItems().add("Medium");
         fontSizeList.getItems().add("Large");
         fontSizeList.setPrefHeight(100);
+
+        difficultyList = new ListView<>(); //to hold all the file names
+        difficultyList.setId("DifficultyList");  // DO NOT MODIFY ID
+        difficultyList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        difficultyList.getItems().add("Easy");
+        difficultyList.getItems().add("Medium");
+        difficultyList.getItems().add("Hard");
+        difficultyList.setPrefHeight(100);
 
         GridPane gridPane = new GridPane();
 
@@ -116,12 +131,26 @@ public class SettingsView {
             }
         });
 
-        closeWindowButton = new Button("Close Window");
+        changeDifficultyButton.setOnAction(e -> {
+            try {
+                selectDifficulty(difficultyList);
+            } catch (Exception ex) {
+                System.out.println("Please select a difficulty first.");
+            }
+        });
+
+        closeWindowButton = new
+
+                Button("Close Window");
         closeWindowButton.setId("closeWindowButton"); // DO NOT MODIFY ID
         closeWindowButton.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
         closeWindowButton.setPrefSize(200, 50);
-        closeWindowButton.setFont(new Font(16));
-        closeWindowButton.setOnAction(e -> {
+        closeWindowButton.setFont(new
+
+                Font(16));
+        closeWindowButton.setOnAction(e ->
+
+        {
             dialog.close();
             this.adventureGameView.intiUI();
         });
@@ -151,8 +180,16 @@ public class SettingsView {
         gridPane.add(fontSizeList, 1, 2);
         gridPane.add(changeFontSizeButton, 2, 2);
 
+        // --- Difficulty ---
+        Label changeDifficultyLabel = new Label("Change Difficulty:");
+        changeDifficultyLabel.setId("ChangeDifficultyLabel");
+        changeDifficultyLabel.setStyle("-fx-text-fill: white;");
+        gridPane.add(changeDifficultyLabel, 0, 3);
+        gridPane.add(difficultyList, 1, 3);
+        gridPane.add(changeDifficultyButton, 2, 3);
+
         // --- Close Window ---
-        gridPane.add(closeWindowButton, 1, 5);
+        gridPane.add(closeWindowButton, 1, 4);
         gridPane.setStyle("-fx-background-color: #000000;");
         gridPane.setHgap(25);
         gridPane.setVgap(50);
@@ -240,6 +277,31 @@ public class SettingsView {
                 case "Large":
                     System.out.println("Large");
                     this.adventureGameView.setFontSize(20);
+                    break;
+            }
+        }
+    }
+
+    /**
+     * This method gets the difficulty selected by the user and sets it in the game.
+     *
+     * @param difficultyList List to of difficulties to be added.
+     */
+    private void selectDifficulty(ListView<String> difficultyList) {
+        String difficulty = difficultyList.getSelectionModel().getSelectedItems().get(0);
+        if (difficulty != null) {
+            switch (difficulty) {
+                case "Easy":
+                    System.out.println("Easy");
+                    this.adventureGameView.model.player.setHealth(100);
+                    break;
+                case "Medium":
+                    System.out.println("Medium");
+                    this.adventureGameView.model.player.setHealth(70);
+                    break;
+                case "Hard":
+                    System.out.println("Hard");
+                    this.adventureGameView.model.player.setHealth(50);
                     break;
             }
         }
