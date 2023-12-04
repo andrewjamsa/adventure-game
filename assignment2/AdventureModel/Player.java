@@ -69,6 +69,21 @@ public class Player implements Serializable {
     }
 
     /**
+     * getObject
+     * __________________________
+     * This method gets the object in player's inventory with the name s.
+     *
+     * @param s the name of the object
+     * @return return the AdventureObject with name s if it exists, null otherwise
+     */
+    public AdventureObject getObject(String s) {
+        for (int i = 0; i < this.inventory.size(); i++) {
+            if (this.inventory.get(i).getName().equals(s)) return this.inventory.get(i);
+        }
+        return null;
+    }
+
+    /**
      * This method drops an object in the players inventory and adds it to the room.
      * If the object is not in the inventory, the method does nothing.
      *
@@ -134,8 +149,8 @@ public class Player implements Serializable {
         }
     }
 
-    /**
-     * This method returns whether the player is alive or not.
+
+    /** This method returns whether the player is alive or not.
      *
      * @return true if the player is alive, false otherwise
      */

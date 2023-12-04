@@ -6,6 +6,7 @@ import javax.lang.model.type.NullType;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -28,11 +29,10 @@ public class MultipleEffects implements EffectDecorators{
         return effects.stream().map(EffectStrategy::getDescription).collect(Collectors.joining(", "));
     }
 
-
     @Override
-    public void applyFunction(Function<EffectStrategy, NullType> function) {
+    public void applyFunction(Consumer<EffectStrategy> function) {
         for (EffectStrategy effect:effects){
-            function.apply(effect);
+            function.accept(effect);
             if (effect instanceof EffectDecorators){
                 ((EffectDecorators) effect).applyFunction(function);
             }

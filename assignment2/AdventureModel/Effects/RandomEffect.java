@@ -4,6 +4,7 @@ import AdventureModel.Player;
 
 import javax.lang.model.type.NullType;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 class WeightedRandom<E>{
@@ -55,9 +56,9 @@ public class RandomEffect implements EffectDecorators{
     }
 
     @Override
-    public void applyFunction(Function<EffectStrategy, NullType> function) {
+    public void applyFunction(Consumer<EffectStrategy> function) {
         for (EffectStrategy effect:weightedRandom.map.values()){
-            function.apply(effect);
+            function.accept(effect);
             if (effect instanceof EffectDecorators){
                 ((EffectDecorators) effect).applyFunction(function);
             }
