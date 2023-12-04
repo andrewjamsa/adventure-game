@@ -4,7 +4,7 @@ import AdventureModel.Player;
 
 import javax.lang.model.type.NullType;
 import java.util.function.Consumer;
-import java.util.function.Function;
+
 
 public class HideableEffect implements EffectDecorators{
     private boolean hide = true;

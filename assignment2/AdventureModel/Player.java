@@ -192,5 +192,4 @@ public class Player implements Serializable {
     public Integer getHealthValue() {
         return this.health.getObservableHealth();
     }
-
 }

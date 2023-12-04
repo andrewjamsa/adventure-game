@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import AdventureModel.AdventureObject;
 import AdventureModel.Effects.*;
 
@@ -7,6 +8,8 @@ import java.util.Arrays;
 import java.util.Random;
 
 import AdventureModel.AdventureGame;
+=======
+>>>>>>> 47e89e43ccc0803ec63a2e66ea35e523dba5f02f
 import AdventureModel.AdventureObject;
 import AdventureModel.Effects.*;
 import AdventureModel.Player;
@@ -14,11 +17,15 @@ import AdventureModel.Room;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+<<<<<<< HEAD
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
 
+=======
+
+>>>>>>> 47e89e43ccc0803ec63a2e66ea35e523dba5f02f
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
@@ -66,9 +73,12 @@ public class EffectsTest {
 
     /*
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> 87d27a0 (fixed factory bug. added tests for the effectFactory. added INSPECT command for the player to be able inspect object descriptions.)
+=======
+>>>>>>> 47e89e43ccc0803ec63a2e66ea35e523dba5f02f
     Testing the EffectStrategyMock class
      */
     @Test

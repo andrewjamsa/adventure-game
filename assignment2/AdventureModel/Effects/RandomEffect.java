@@ -5,6 +5,7 @@ import AdventureModel.Player;
 import javax.lang.model.type.NullType;
 import java.util.*;
 import java.util.function.Consumer;
+
 class WeightedRandom<E>{
     public final NavigableMap<Double, E> map = new TreeMap<>();
     private final Random random;
