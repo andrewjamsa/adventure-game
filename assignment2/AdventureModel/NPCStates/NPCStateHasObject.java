@@ -55,9 +55,12 @@ public class NPCStateHasObject implements NPCState {
                 if (takenObj==null){
                     return "I DON'T HAVE THAT OBJECT";
                 }
+                if (npc.getSideQuest()!=null && npc.getSideQuest().actionInterfere(takenObj.getName())){
+                    return "YOU NEED TO COMPLETE MY SIDEQUEST FIRST!";
+                }
                 takeObject(player, takenObj);
                 return "Here it is, the "+takenObj.getName();
-            } else if (Objects.equals(actionName[1], "SIDEQUEST")){
+            } /*else if (Objects.equals(actionName[1], "SIDEQUEST")){
                 if (this.npc.getSideQuest()==null){
                     return "I don't have any side quest for you";
                 } else if (Objects.equals(this.npc.getSideQuest().getType(), "QNA")) {
@@ -67,7 +70,7 @@ public class NPCStateHasObject implements NPCState {
                     SQ_Object casted_SQ_Object = (SQ_Object) this.npc.getSideQuest();
                     return casted_SQ_Object.getQuestion();
                 }
-            }
+            }*/
         }
         return "I don't understand what are you saying";
     }
@@ -90,4 +93,12 @@ public class NPCStateHasObject implements NPCState {
         return NPCState.super.getActionList(); // may cause potential issue
     }
     public String getNPCState() {return "NPCStateHasObject";}
+    public void giveReward(Player player, String object){
+        for (AdventureObject obj: objects) {
+            if (Objects.equals(obj.getName(), object)) {
+                player.inventory.add(obj);
+                objects.remove(obj);
+            }
+        }
+    }
 }

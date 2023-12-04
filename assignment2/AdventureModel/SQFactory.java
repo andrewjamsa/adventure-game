@@ -23,8 +23,9 @@ public class SQFactory {
             if (type.equals("QNA")){
                 String question = buff.readLine().substring(9);
                 String hint = buff.readLine().substring(6);
+                String correct = buff.readLine().substring(9);
                 String incorrect = buff.readLine().substring(11);
-                SQ_Question sqQuestion = new SQ_Question(npcInCharge, question, hint, incorrect);
+                SQ_Question sqQuestion = new SQ_Question(npcInCharge, question, hint, correct, incorrect);
                 assert npcInCharge != null;
                 npcInCharge.sideQuest = sqQuestion;
                 buff.readLine();

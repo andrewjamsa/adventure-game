@@ -48,14 +48,14 @@ public class AdventureLoader {
         sqFactory.SQGenerator(this.game.npcHashMap, buff);
     }
     public void parseHint() throws IOException {
-        String sqFileName = this.adventureName + "/hints.txt";
-        BufferedReader buff = new BufferedReader(new FileReader(sqFileName));
+        String hintFileName = this.adventureName + "/hints.txt";
+        BufferedReader buff = new BufferedReader(new FileReader(hintFileName));
         while (buff.ready()){
             String[] temp = buff.readLine().split(": ");
             if (this.game.hints.containsKey(Integer.valueOf(temp[0]))){
                 this.game.hints.get(Integer.valueOf(temp[0])).add(temp[1]);
             } else {
-                this.game.hints.put(Integer.valueOf(temp[0]), new ArrayList<>(Arrays.asList(temp[1])));
+                this.game.hints.put(Integer.valueOf(temp[0]), new ArrayList<>(Collections.singletonList(temp[1])));
             }
         }
     }

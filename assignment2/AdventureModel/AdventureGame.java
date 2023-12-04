@@ -1,10 +1,10 @@
 package AdventureModel;
 
+import AdventureModel.SideQuests.SQ_Object;
+import AdventureModel.SideQuests.SQ_Question;
+
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Class AdventureGame.  Handles all the necessary tasks to run the Adventure game.
@@ -19,6 +19,7 @@ public class AdventureGame implements Serializable {
     public Player player; //The Player of the game.
     public HashMap<Integer, NPC> npcHashMap = new HashMap<>();
     public HashMap<Integer, ArrayList<String>> hints = new HashMap<>();
+    public boolean doSideQuest = false;
 
     public AdventureGame(String name) {
         this(name, 100, 100); // THESE ARE THE DEFAULT VALUES, values should normally be set in game file or due to difficulty
@@ -156,7 +157,11 @@ public class AdventureGame implements Serializable {
         String[] inputArray = tokenize(command); //look up synonyms
 
         PassageTable motionTable = this.player.getCurrentRoom().getMotionTable(); //where can we move?
-
+        if (doSideQuest){
+            doSideQuest=false;
+            NPC npcInCharge = this.npcHashMap.get(this.player.getCurrentRoom().getRoomNumber());
+            return npcInCharge.action(player, inputArray);
+        }
         if (motionTable.optionExists(inputArray[0])) {
             if (!movePlayer(inputArray[0])) {
                 if (this.player.getCurrentRoom().getMotionTable().getDirection().get(0).getDestinationRoom() == 0)
@@ -191,7 +196,13 @@ public class AdventureGame implements Serializable {
                     return "THIS OBJECT IS NOT IN YOUR INVENTORY:\n " + inputArray[1];
                 }
             } else if (inputArray[0].equals("NPC")) {
+                if (!this.npcHashMap.containsKey(this.player.getCurrentRoom().getRoomNumber())){
+                    return "No NPC is available here";
+                }
                 NPC npcInCharge = this.npcHashMap.get(this.player.getCurrentRoom().getRoomNumber());
+                if (inputArray.length==2 && Objects.equals(inputArray[1], "SIDEQUEST")){
+                    doSideQuest = true;
+                }
                 return npcInCharge.action(player, inputArray);
             } else if (inputArray[0].equals("HINT")) {
                 Random rand = new Random();
