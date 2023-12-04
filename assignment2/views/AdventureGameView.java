@@ -703,7 +703,7 @@ public class AdventureGameView {
      *
      * @return fontSize
      */
-    public int getFontSize() {
+    public int  getFontSize() {
         return fontSize;
     }
 
