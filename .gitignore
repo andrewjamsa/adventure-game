@@ -5,3 +5,4 @@ out/
 *.log
 *.class
 .DS_Store
+*.jar

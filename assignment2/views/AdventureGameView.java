@@ -19,6 +19,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.layout.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -27,6 +29,8 @@ import javafx.scene.AccessibleRole;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Class AdventureGameView.
@@ -43,6 +47,7 @@ public class AdventureGameView {
     AdventureGame model; //model of the game
     Stage stage; //stage on which all is rendered
     Button saveButton, loadButton, helpButton, settingsButton; //buttons
+    Label timerLabel;
     Boolean helpToggle = false; //is help on display?
 
     GridPane gridPane = new GridPane(); //to hold images and buttons
@@ -57,11 +62,51 @@ public class AdventureGameView {
 
     private ArrayList<Node> grid11 = new ArrayList<>();
     private VBox helpVBox = null;
+
     private ColorWay gameColorWay;
     private String gameFont;
     private String colorWayName;
     private ColorWayFactory gameColorWayFactory;
     private boolean settingsToggle = false;
+
+    private Timer timer = new Timer();
+    private TimerTask timerTask = new TimerTask() {
+        @Override
+        public void run() {
+            int hh;
+            int mm;
+            int ss = 0;
+            if (time>=3600){
+                hh = time/3600;
+                mm = (time%3600)/60;
+                ss = (time%3600%60);
+            } else {
+                hh = 0;
+                if (time >=60) {
+                    mm = (time%3600)/60;
+                    ss = (time%60);
+                } else {
+                    mm = 0;
+                    ss = time;
+                }
+            }
+            time -=1;
+            int finalSs = ss;
+            Platform.runLater(() -> timerLabel.setText(String.format("%d:%d:%d", hh, mm , finalSs)));
+            Platform.runLater(() ->{
+            if (time < 0){
+                timer.cancel();
+                updateScene("YOU LOST AGAINST THE TIME");
+                PauseTransition pause = new PauseTransition(Duration.seconds(10));
+                pause.setOnFinished(event -> {
+                    Platform.exit();
+                });
+                pause.play();
+            };
+        });
+        }
+    };
+    private int time = 0;
 
     private PlayerHealthBar healthBar;
 
@@ -139,9 +184,15 @@ public class AdventureGameView {
         makeButtonAccessible(helpButton, "Help Button", "This button gives game instructions.", "This button gives instructions on the game controls. Click it to learn how to play.");
         addInstructionEvent();
 
+        timerLabel = new Label("Normal Mode");
+        timerLabel.setId("Timer");
+        timerLabel.setAlignment(Pos.CENTER);
+        timerLabel.setPrefSize(100, 50);
+        timerLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        timerLabel.setStyle("-fx-background-color: white; -fx-text-fill: #17871b;");
 
         HBox topButtons = new HBox();
-        topButtons.getChildren().addAll(saveButton, helpButton, loadButton);
+        topButtons.getChildren().addAll(saveButton, helpButton, loadButton, this.timerLabel);
         topButtons.setSpacing(10);
         topButtons.setAlignment(Pos.CENTER);
 
@@ -190,7 +241,13 @@ public class AdventureGameView {
         gridPane.add(textEntry, 0, 2, 3, 1);
 
         // add the health bar
-        healthBar = new PlayerHealthBar(model.getPlayer());
+        healthBar = new PlayerHealthBar(model.getPlayer(), () -> {
+
+            if (!healthBar.isAlive()) {
+                updateScene("PLAYER DIED! GAME OVER.");
+            }
+            return null;
+        });
 
         // add the health bar to the gridpane
         gridPane.add(healthBar.getBar(), 1, 3, 1, 1);
@@ -203,7 +260,6 @@ public class AdventureGameView {
         this.stage.show();
 
     }
-
 
     /**
      * makeButtonAccessible
@@ -257,42 +313,23 @@ public class AdventureGameView {
         // button.add
 
         inputTextField.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER) {
-                          /*
-                          String stripped = inputTextField.getText().stripTrailing().stripLeading();
-                          try {
-                          String command = stripped.split(" ")[0];
-                          String object = stripped.split(" ")[1];
-                          if (command.equalsIgnoreCase("TAKE")){
-                              for (Node element: objectsInRoom.getChildren()){
-                                  if (((Button) element).getText().equalsIgnoreCase(object)){
-                                      objectsInRoom.getChildren().remove(element);
-                                      objectsInInventory.getChildren().add(element);
-                                      break;
-                                  }
-                              }
-                          } else if (command.equalsIgnoreCase("DROP")) {
-                              for (Node element: objectsInInventory.getChildren()){
-                                  if (((Button) element).getText().equalsIgnoreCase(object)){
-                                      objectsInRoom.getChildren().add(element);
-                                      objectsInInventory.getChildren().remove(element);
-                                      break;
-                                  }
-                              }
-                          }} catch (Exception ignored) {
-                          }*/
-                submitEvent(inputTextField.getText().stripTrailing().stripLeading());
-                inputTextField.setText("");
-            } else if (event.getCode() == KeyCode.TAB) {
-                if (gridPane.getChildren().indexOf(inputTextField) == gridPane.getChildren().size() - 1) {
-                    gridPane.getChildren().get(0).requestFocus();
-                } else {
-                    gridPane.getChildren().get(gridPane.getChildren().indexOf(inputTextField) + 1).requestFocus();
-                }
-            }
+              if (event.getCode() == KeyCode.ENTER) {
+
+                  submitEvent(inputTextField.getText().stripTrailing().stripLeading());
+                  inputTextField.setText("");
+              } else if (event.getCode() == KeyCode.TAB) {
+                  if (gridPane.getChildren().indexOf(inputTextField) == gridPane.getChildren().size()-1){
+                      gridPane.getChildren().get(0).requestFocus();
+                  }else {
+                      gridPane.getChildren().get(gridPane.getChildren().indexOf(inputTextField) + 1).requestFocus();
+                  }
+              }
         });
     }
 
+    private void showTimer(){
+        this.timer.scheduleAtFixedRate(timerTask, 0, 1000);
+    }
 
     /**
      * submitEvent
@@ -301,6 +338,11 @@ public class AdventureGameView {
      * @param text the command that needs to be processed
      */
     private void submitEvent(String text) {
+
+        if (!this.model.getPlayer().isAlive()) {
+            updateScene("PLAYER DIED! GAME OVER.");
+            return;
+        }
 
         text = text.strip(); //get rid of white space
         stopArticulation(); //if speaking, stop
@@ -318,7 +360,35 @@ public class AdventureGameView {
             showCommands(); //this is new!  We did not have this command in A1
             return;
         }
+        String[] checkTimer = text.split(" ");
+        if (checkTimer[0].equalsIgnoreCase("TIMER") || checkTimer[0].equalsIgnoreCase("T")){
+            this.time = 0;
+            if (checkTimer.length==1){
+                updateScene("Please enter the timer in the format of TIMER hh/mm/ss");
+                return;
+            }
+            if (checkTimer.length==2){
+                String[] timeInString = checkTimer[1].split(":");
+                for (int j=0; j<timeInString.length; j++){
+                    try{
+                        Integer.parseInt(timeInString[j]);
+                    } catch (NumberFormatException e){
+                        updateScene("Please enter the timer in the format of TIMER hh/mm/ss");
+                    }
+                }
+                if (timeInString.length==3){
+                    this.time += Integer.parseInt(timeInString[2])+Integer.parseInt(timeInString[1])*60
+                            +Integer.parseInt(timeInString[0])*3600;
+                } else if (timeInString.length==2) {
+                    this.time += Integer.parseInt(timeInString[1])+Integer.parseInt(timeInString[0])*60;
+                } else if (timeInString.length==1) {
+                    this.time += Integer.parseInt((timeInString[0]));
+                }
+                showTimer();
+                return;
+            }
 
+        }
         //try to move!
         String output = this.model.interpretAction(text); //process the command!
 
@@ -358,7 +428,6 @@ public class AdventureGameView {
         roomDescLabel.setStyle("-fx-text-fill: #"+gameColorWay.getTextColor().toString().substring(2)+";");
         roomDescLabel.setText("The possible moves are: " + model.player.getCurrentRoom().getCommands());
     }
-
 
     /**
      * updateScene
@@ -452,7 +521,6 @@ public class AdventureGameView {
      * folders of the given adventure game.
      */
     public void updateItems() {
-
         //write some code here to add images of objects in a given room to the objectsInRoom Vbox
         //write some code here to add images of objects in a player's inventory room to the objectsInInventory Vbox
         //please use setAccessibleText to add "alt" descriptions to your images!
