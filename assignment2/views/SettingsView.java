@@ -40,6 +40,9 @@ public class SettingsView {
     public SettingsView(AdventureGameView adventureGameView) {
         this.adventureGameView = adventureGameView;
 
+        System.out.println("Pick the settings you would like to change.");
+        System.out.println("Then click the start game button to start the game.");
+
         //set default colorway and font
         this.adventureGameView.setColorWayName("dark");
         this.adventureGameView.setGameFont("Arial");
@@ -92,7 +95,7 @@ public class SettingsView {
             }
         });
 
-        closeWindowButton = new Button("Close Window");
+        closeWindowButton = new Button("Start Game");
         closeWindowButton.setId("closeWindowButton"); // DO NOT MODIFY ID
         closeWindowButton.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
         closeWindowButton.setPrefSize(200, 50);
@@ -154,11 +157,11 @@ public class SettingsView {
                     this.adventureGameView.setColorWayName("Dark");
                     break;
                 case "Light ColorWay":
-                    System.out.println("Light ColorWay");
+                    System.out.println("Selected Light ColorWay");
                     this.adventureGameView.setColorWayName("Light");
                     break;
                 case "High Contrast ColorWay":
-                    System.out.println("High Contrast ColorWay");
+                    System.out.println("Selected High Contrast ColorWay");
                     this.adventureGameView.setColorWayName("HighContrast");
                     break;
             }
@@ -175,15 +178,15 @@ public class SettingsView {
         if (font != null) {
             switch (font) {
                 case "Arial":
-                    System.out.println("Arial");
+                    System.out.println("Selected Arial");
                     this.adventureGameView.setGameFont("Arial");
                     break;
                 case "Times New Roman":
-                    System.out.println("Times New Roman");
+                    System.out.println("Selected Times New Roman");
                     this.adventureGameView.setGameFont("Times New Roman");
                     break;
                 case "Comic Sans":
-                    System.out.println("Comic Sans");
+                    System.out.println("Selected Comic Sans");
                     this.adventureGameView.setGameFont("Comic Sans");
                     break;
             }
