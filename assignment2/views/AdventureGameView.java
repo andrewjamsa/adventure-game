@@ -3,6 +3,9 @@ package views;
 import AdventureModel.AdventureGame;
 import AdventureModel.AdventureObject;
 import AdventureModel.PlayerHealth.PlayerHealthBar;
+import ColorWay.ColorWay;
+import ColorWay.ColorWayFactory;
+import com.sun.scenario.Settings;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -41,9 +44,11 @@ import java.util.TimerTask;
  */
 public class AdventureGameView {
 
+    int fontSize; // font size for text
+
     AdventureGame model; //model of the game
     Stage stage; //stage on which all is rendered
-    Button saveButton, loadButton, helpButton; //buttons
+    Button saveButton, loadButton, helpButton, settingsButton; //buttons
     Label timerLabel;
     Boolean helpToggle = false; //is help on display?
 
@@ -59,6 +64,13 @@ public class AdventureGameView {
 
     private ArrayList<Node> grid11 = new ArrayList<>();
     private VBox helpVBox = null;
+
+    private ColorWay gameColorWay;
+    private String gameFont;
+    private String colorWayName;
+    private ColorWayFactory gameColorWayFactory;
+    private boolean settingsToggle = false;
+
     private Timer timer = new Timer();
     private TimerTask timerTask = new TimerTask() {
         @Override
@@ -66,49 +78,52 @@ public class AdventureGameView {
             int hh;
             int mm;
             int ss = 0;
-            if (time>=3600){
-                hh = time/3600;
-                mm = (time%3600)/60;
-                ss = (time%3600%60);
+            if (time >= 3600) {
+                hh = time / 3600;
+                mm = (time % 3600) / 60;
+                ss = (time % 3600 % 60);
             } else {
                 hh = 0;
-                if (time >=60) {
-                    mm = (time%3600)/60;
-                    ss = (time%60);
+                if (time >= 60) {
+                    mm = (time % 3600) / 60;
+                    ss = (time % 60);
                 } else {
                     mm = 0;
                     ss = time;
                 }
             }
-            time -=1;
+            time -= 1;
             int finalSs = ss;
-            Platform.runLater(() -> timerLabel.setText(String.format("%d:%d:%d", hh, mm , finalSs)));
-            Platform.runLater(() ->{
-            if (time < 0){
-                timer.cancel();
-                updateScene("YOU LOST AGAINST THE TIME");
-                PauseTransition pause = new PauseTransition(Duration.seconds(10));
-                pause.setOnFinished(event -> {
-                    Platform.exit();
-                });
-                pause.play();
-            };
-        });
+            Platform.runLater(() -> timerLabel.setText(String.format("%d:%d:%d", hh, mm, finalSs)));
+            Platform.runLater(() -> {
+                if (time < 0) {
+                    timer.cancel();
+                    updateScene("YOU LOST AGAINST THE TIME");
+                    PauseTransition pause = new PauseTransition(Duration.seconds(10));
+                    pause.setOnFinished(event -> {
+                        Platform.exit();
+                    });
+                    pause.play();
+                }
+                ;
+            });
         }
     };
     private int time = 0;
 
     private PlayerHealthBar healthBar;
 
-    /**
-     * Adventure Game View Constructor
-     * __________________________
-     * Initializes attributes
-     */
     public AdventureGameView(AdventureGame model, Stage stage) {
+        this(model, stage, 16); // default fontsize as 16
+    }
+
+    public AdventureGameView(AdventureGame model, Stage stage, int fontSize) {
         this.model = model;
         this.stage = stage;
-        intiUI();
+        this.fontSize = fontSize;
+
+        stage.requestFocus();
+        SettingsView settingsView = new SettingsView(this);
     }
 
     /**
@@ -125,10 +140,16 @@ public class AdventureGameView {
         objectsInRoom.setSpacing(10);
         objectsInRoom.setAlignment(Pos.TOP_CENTER);
 
+        this.gameColorWayFactory = new ColorWayFactory();
+        this.gameColorWay = gameColorWayFactory.getColorWay(colorWayName);
+
+        System.out.println(colorWayName);
+        System.out.println(this.gameColorWay);
+
         // GridPane, anyone?
         gridPane.setPadding(new Insets(20));
         gridPane.setBackground(new Background(new BackgroundFill(
-                Color.valueOf("#000000"),
+                this.gameColorWay.getBoardColor(),
                 new CornerRadii(0),
                 new Insets(0)
         )));
@@ -173,7 +194,7 @@ public class AdventureGameView {
         timerLabel.setId("Timer");
         timerLabel.setAlignment(Pos.CENTER);
         timerLabel.setPrefSize(100, 50);
-        timerLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        timerLabel.setFont(Font.font("Arial", FontWeight.BOLD, this.getFontSize() - 2));
         timerLabel.setStyle("-fx-background-color: white; -fx-text-fill: #17871b;");
 
         HBox topButtons = new HBox();
@@ -182,9 +203,11 @@ public class AdventureGameView {
         topButtons.setAlignment(Pos.CENTER);
 
         inputTextField = new TextField();
-        inputTextField.setFont(new Font("Arial", 16));
-        inputTextField.setFocusTraversable(true);
 
+        inputTextField.setFont(new Font(this.gameFont, this.getFontSize()));
+
+        inputTextField.setFocusTraversable(true);
+        inputTextField.setStyle(" -fx-text-fill: #" + gameColorWay.getTextBoxColor().toString().substring(2) + ";");
         inputTextField.setAccessibleRole(AccessibleRole.TEXT_AREA);
         inputTextField.setAccessibleRoleDescription("Text Entry Box");
         inputTextField.setAccessibleText("Enter commands in this box.");
@@ -194,29 +217,34 @@ public class AdventureGameView {
         //labels for inventory and room items
         Label objLabel = new Label("Objects in Room");
         objLabel.setAlignment(Pos.CENTER);
-        objLabel.setStyle("-fx-text-fill: white;");
-        objLabel.setFont(new Font("Arial", 16));
+
+
+        objLabel.setStyle("-fx-text-fill:#" + gameColorWay.getTextColor().toString().substring(2) + " ;");
+        objLabel.setFont(new Font(this.gameFont, this.getFontSize()));
 
         Label invLabel = new Label("Your Inventory");
         invLabel.setAlignment(Pos.CENTER);
-        invLabel.setStyle("-fx-text-fill: white;");
-        invLabel.setFont(new Font("Arial", 16));
+        invLabel.setStyle("-fx-text-fill: #" + gameColorWay.getTextColor().toString().substring(2) + ";");
+        invLabel.setFont(new Font(this.gameFont, this.getFontSize()));
 
+        
         //add all the widgets to the GridPane
         gridPane.add(objLabel, 0, 0, 1, 1);  // Add label
         gridPane.add(topButtons, 1, 0, 1, 1);  // Add buttons
         gridPane.add(invLabel, 2, 0, 1, 1);  // Add label
 
         Label commandLabel = new Label("What would you like to do?");
-        commandLabel.setStyle("-fx-text-fill: white;");
-        commandLabel.setFont(new Font("Arial", 16));
+
+        commandLabel.setStyle("-fx-text-fill:#" + this.getColorWay().getTextColor().toString().substring(2) + ";");
+        commandLabel.setFont(new Font(this.gameFont, this.getFontSize()));
 
         updateScene(""); //method displays an image and whatever text is supplied
         updateItems(); //update items shows inventory and objects in rooms
 
+
         // adding the text area and submit button to a VBox
         VBox textEntry = new VBox();
-        textEntry.setStyle("-fx-background-color: #000000;");
+        textEntry.setStyle("-fx-background-color: #" + gameColorWay.getBoardColor().toString().substring(2) + ";");
         textEntry.setPadding(new Insets(20, 20, 20, 20));
         textEntry.getChildren().addAll(commandLabel, inputTextField);
         textEntry.setSpacing(10);
@@ -224,19 +252,25 @@ public class AdventureGameView {
         gridPane.add(textEntry, 0, 2, 3, 1);
 
         // add the health bar
-        healthBar = new PlayerHealthBar(model.getPlayer());
+        healthBar = new PlayerHealthBar(model.getPlayer(), () -> {
+
+            if (!healthBar.isAlive()) {
+                updateScene("PLAYER DIED! GAME OVER.");
+            }
+            return null;
+        });
 
         // add the health bar to the gridpane
         gridPane.add(healthBar.getBar(), 1, 3, 1, 1);
 
         // Render everything
         var scene = new Scene(gridPane, 1000, 800);
-        scene.setFill(Color.BLACK);
+        scene.setFill(gameColorWay.getBoardColor());
         this.stage.setScene(scene);
         this.stage.setResizable(false);
         this.stage.show();
-    }
 
+    }
 
     /**
      * makeButtonAccessible
@@ -267,8 +301,9 @@ public class AdventureGameView {
      */
     private void customizeButton(Button inputButton, int w, int h) {
         inputButton.setPrefSize(w, h);
-        inputButton.setFont(new Font("Arial", 16));
-        inputButton.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
+
+        inputButton.setFont(new Font(this.gameFont, this.getFontSize()));
+        inputButton.setStyle("-fx-background-color: #" + gameColorWay.getButtonColor().toString().substring(2) + "; -fx-text-fill: #" + gameColorWay.getButtonTextColor().toString().substring(2) + ";");
     }
 
     /**
@@ -290,21 +325,21 @@ public class AdventureGameView {
         // button.add
 
         inputTextField.setOnKeyPressed(event -> {
-              if (event.getCode() == KeyCode.ENTER) {
+            if (event.getCode() == KeyCode.ENTER) {
 
-                  submitEvent(inputTextField.getText().stripTrailing().stripLeading());
-                  inputTextField.setText("");
-              } else if (event.getCode() == KeyCode.TAB) {
-                  if (gridPane.getChildren().indexOf(inputTextField) == gridPane.getChildren().size()-1){
-                      gridPane.getChildren().get(0).requestFocus();
-                  }else {
-                      gridPane.getChildren().get(gridPane.getChildren().indexOf(inputTextField) + 1).requestFocus();
-                  }
-              }
+                submitEvent(inputTextField.getText().stripTrailing().stripLeading());
+                inputTextField.setText("");
+            } else if (event.getCode() == KeyCode.TAB) {
+                if (gridPane.getChildren().indexOf(inputTextField) == gridPane.getChildren().size() - 1) {
+                    gridPane.getChildren().get(0).requestFocus();
+                } else {
+                    gridPane.getChildren().get(gridPane.getChildren().indexOf(inputTextField) + 1).requestFocus();
+                }
+            }
         });
     }
 
-    private void showTimer(){
+    private void showTimer() {
         this.timer.scheduleAtFixedRate(timerTask, 0, 1000);
     }
 
@@ -315,6 +350,11 @@ public class AdventureGameView {
      * @param text the command that needs to be processed
      */
     private void submitEvent(String text) {
+
+        if (!this.model.getPlayer().isAlive()) {
+            updateScene("PLAYER DIED! GAME OVER.");
+            return;
+        }
 
         text = text.strip(); //get rid of white space
         stopArticulation(); //if speaking, stop
@@ -333,27 +373,27 @@ public class AdventureGameView {
             return;
         }
         String[] checkTimer = text.split(" ");
-        if (checkTimer[0].equalsIgnoreCase("TIMER") || checkTimer[0].equalsIgnoreCase("T")){
+        if (checkTimer[0].equalsIgnoreCase("TIMER") || checkTimer[0].equalsIgnoreCase("T")) {
             this.time = 0;
-            if (checkTimer.length==1){
+            if (checkTimer.length == 1) {
                 updateScene("Please enter the timer in the format of TIMER hh/mm/ss");
                 return;
             }
-            if (checkTimer.length==2){
+            if (checkTimer.length == 2) {
                 String[] timeInString = checkTimer[1].split(":");
-                for (int j=0; j<timeInString.length; j++){
-                    try{
+                for (int j = 0; j < timeInString.length; j++) {
+                    try {
                         Integer.parseInt(timeInString[j]);
-                    } catch (NumberFormatException e){
+                    } catch (NumberFormatException e) {
                         updateScene("Please enter the timer in the format of TIMER hh/mm/ss");
                     }
                 }
-                if (timeInString.length==3){
-                    this.time += Integer.parseInt(timeInString[2])+Integer.parseInt(timeInString[1])*60
-                            +Integer.parseInt(timeInString[0])*3600;
-                } else if (timeInString.length==2) {
-                    this.time += Integer.parseInt(timeInString[1])+Integer.parseInt(timeInString[0])*60;
-                } else if (timeInString.length==1) {
+                if (timeInString.length == 3) {
+                    this.time += Integer.parseInt(timeInString[2]) + Integer.parseInt(timeInString[1]) * 60
+                            + Integer.parseInt(timeInString[0]) * 3600;
+                } else if (timeInString.length == 2) {
+                    this.time += Integer.parseInt(timeInString[1]) + Integer.parseInt(timeInString[0]) * 60;
+                } else if (timeInString.length == 1) {
                     this.time += Integer.parseInt((timeInString[0]));
                 }
                 showTimer();
@@ -397,9 +437,9 @@ public class AdventureGameView {
      * current room.
      */
     private void showCommands() {
+        roomDescLabel.setStyle("-fx-text-fill: #" + gameColorWay.getTextColor().toString().substring(2) + ";");
         roomDescLabel.setText("The possible moves are: " + model.player.getCurrentRoom().getCommands());
     }
-
 
     /**
      * updateScene
@@ -421,10 +461,11 @@ public class AdventureGameView {
         roomDescLabel.setPrefHeight(500);
         roomDescLabel.setTextOverrun(OverrunStyle.CLIP);
         roomDescLabel.setWrapText(true);
+        roomDescLabel.setStyle("-fx-text-fill: #" + gameColorWay.getTextColor().toString().substring(2) + ";");
         VBox roomPane = new VBox(roomImageView, roomDescLabel);
         roomPane.setPadding(new Insets(10));
         roomPane.setAlignment(Pos.TOP_CENTER);
-        roomPane.setStyle("-fx-background-color: #000000;");
+        roomPane.setStyle("-fx-background-color: #" + gameColorWay.getBoardColor().toString().substring(2) + ";");
 
         gridPane.add(roomPane, 1, 1);
         stage.sizeToScene();
@@ -450,8 +491,8 @@ public class AdventureGameView {
             else roomDescLabel.setText(roomDesc);
         } else roomDescLabel.setText(textToDisplay);
         roomDescLabel.setStyle("-fx-text-fill: white;");
-        roomDescLabel.setFont(new Font("Arial", 16));
-        roomDescLabel.setAlignment(Pos.CENTER);
+
+        roomDescLabel.setFont(new Font(this.gameFont, this.getFontSize()));
     }
 
     /**
@@ -492,7 +533,6 @@ public class AdventureGameView {
      * folders of the given adventure game.
      */
     public void updateItems() {
-
         //write some code here to add images of objects in a given room to the objectsInRoom Vbox
         //write some code here to add images of objects in a player's inventory room to the objectsInInventory Vbox
         //please use setAccessibleText to add "alt" descriptions to your images!
@@ -503,7 +543,7 @@ public class AdventureGameView {
 
         ScrollPane scO = new ScrollPane(objectsInRoom);
         scO.setPadding(new Insets(10));
-        scO.setStyle("-fx-background: #000000; -fx-background-color:transparent;");
+        scO.setStyle("-fx-background: #" + gameColorWay.getBoardColor().toString().substring(2) + "; -fx-background-color:transparent;");
         scO.setFitToWidth(true);
         gridPane.add(scO, 0, 1);
         for (AdventureObject element : model.player.getCurrentRoom().objectsInRoom) {
@@ -541,7 +581,7 @@ public class AdventureGameView {
         // --------------------------------------------------------------------------
         ScrollPane scI = new ScrollPane(objectsInInventory);
         scI.setFitToWidth(true);
-        scI.setStyle("-fx-background: #000000; -fx-background-color:transparent;");
+        scI.setStyle("-fx-background: #" + gameColorWay.getBoardColor().toString().substring(2) + "; -fx-background-color:transparent;");
         gridPane.add(scI, 2, 1);
 
         for (AdventureObject element : model.player.inventory) {
@@ -574,11 +614,17 @@ public class AdventureGameView {
         }
     }
 
+    /**
+     * This method updates the helpVBox.
+     */
+
     private void updateHelpVBox() {
         if (helpVBox == null) {
             TextArea helpTextArea = new TextArea();
             helpTextArea.setEditable(false);
             helpTextArea.setPrefHeight(1000);
+            helpTextArea.setStyle("-fx-text-fill: #" + gameColorWay.getTextBoxColor().toString().substring(2) + ";");
+            helpTextArea.setFont(new Font(this.gameFont, this.getFontSize()));
             helpTextArea.setText(model.getInstructions());
             helpVBox = new VBox();
             helpVBox.getChildren().add(helpTextArea);
@@ -687,4 +733,78 @@ public class AdventureGameView {
             mediaPlaying = false;
         }
     }
+
+    /**
+     * This method returns the font size
+     *
+     * @return fontSize
+     */
+    public int getFontSize() {
+        return fontSize;
+    }
+
+    /**
+     * This method sets the font size
+     *
+     * @param fontSize the font size to set
+     */
+    public void setFontSize(int fontSize) {
+        this.fontSize = fontSize;
+    }
+
+    /**
+     * This method gets the games colorway.
+     *
+     * @return the games colorway
+     */
+    public ColorWay getColorWay() {
+        return gameColorWay;
+    }
+
+    /**
+     * This method sets the games colorway.
+     */
+    public void setColorWay(ColorWay colorWay) {
+        this.gameColorWay = colorWay;
+    }
+
+    /**
+     * This method gets the games font.
+     *
+     * @return the games font
+     */
+    public String getGameFont() {
+        return gameFont;
+    }
+
+    /**
+     * This method sets the games font.
+     */
+    public void setGameFont(String gameFont) {
+        this.gameFont = gameFont;
+    }
+
+    /**
+     * This method gets the games colorway name.
+     *
+     * @return the games colorway name
+     */
+    public String getColorWayName() {
+        return colorWayName;
+    }
+
+    /**
+     * This method sets the games colorway name.
+     */
+    public void setColorWayName(String colorWayName) {
+        this.colorWayName = colorWayName;
+    }
+
+    /**
+     * This method sets the settings toggle.
+     */
+    public void setSettingsToggle(boolean settingsToggle) {
+        this.settingsToggle = settingsToggle;
+    }
+
 }

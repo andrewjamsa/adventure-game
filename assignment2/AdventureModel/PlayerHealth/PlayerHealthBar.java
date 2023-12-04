@@ -4,6 +4,8 @@ import AdventureModel.Player;
 import javafx.geometry.Insets;
 import javafx.scene.control.ProgressBar;
 
+import java.util.concurrent.Callable;
+
 public class PlayerHealthBar extends HealthObserver {
 
     /**
@@ -11,8 +13,15 @@ public class PlayerHealthBar extends HealthObserver {
      */
     private final ProgressBar healthBar;
 
-    public PlayerHealthBar(Player player) {
+    /**
+     * Custom on change method.
+     */
+    private Callable<?> customOnChange;
+
+    public PlayerHealthBar(Player player, Callable<?> customOnChange) {
         super(player.health);
+
+        this.customOnChange = customOnChange;
 
         healthBar = new ProgressBar();
 
@@ -50,6 +59,13 @@ public class PlayerHealthBar extends HealthObserver {
     public void onChange() {
         if (this.healthBar == null) return;
 
-        updateBar(); // updates the health bar
+        updateBar();
+
+        try {
+            customOnChange.call();
+        } catch (Exception e) {
+            // ignore exception
+        }
+
     }
 }

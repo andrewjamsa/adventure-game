@@ -107,7 +107,6 @@ public class AdventureGame implements Serializable {
      * @return false, if move results in death or a win (and game is over).  Else, true.
      */
     public boolean movePlayer(String direction) {
-
         direction = direction.toUpperCase();
         PassageTable motionTable = this.player.getCurrentRoom().getMotionTable(); //where can we move?
         if (!motionTable.optionExists(direction)) return true; //no move
