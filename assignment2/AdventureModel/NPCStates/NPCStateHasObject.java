@@ -10,15 +10,37 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
+/**
+ * Class NPCStateHasObject. This class stores the state of the NPC.
+ */
 public class NPCStateHasObject implements NPCState {
     NPC npc = null;
     ArrayList<String> actionList = null;
     ArrayList<AdventureObject> objects = null;
+
+    /**
+     * NPCStateHasObject Constructor
+     * ____________________________________
+     * Initializes Attributes
+     *
+     * @param npc NPC that corresponds to the state
+     * @param objects ArrayList of the AdventureObjects owned by the NPC
+     */
     public NPCStateHasObject(NPC npc, ArrayList<AdventureObject> objects){
         this.npc = npc;
         this.objects = objects;
         this.actionList = new ArrayList<String>(Arrays.asList("GIVE", "TAKE", "CHAT", "ASK", "SIDEQUEST", "SING", "ITEM")); // accept for side quest (?)
     }
+
+    /**
+     * action
+     * __________________________
+     * executes the prompt that the player enters and send the results back to the player
+     *
+     * @param player Player that is currently in the AdventureGame
+     * @param actionName String list that corresponds to the action entered by the player
+     * @return String that corresponds to the result of finishing the side quest
+     */
     public String action(Player player, String[] actionName){
         if (this.actionList.contains(actionName[1])){
             if (Objects.equals(actionName[1], "CHAT")){
@@ -60,26 +82,32 @@ public class NPCStateHasObject implements NPCState {
                 }
                 takeObject(player, takenObj);
                 return "Here it is, the "+takenObj.getName();
-            } /*else if (Objects.equals(actionName[1], "SIDEQUEST")){
-                if (this.npc.getSideQuest()==null){
-                    return "I don't have any side quest for you";
-                } else if (Objects.equals(this.npc.getSideQuest().getType(), "QNA")) {
-                    SQ_Question casted_SQ_Question = (SQ_Question) this.npc.getSideQuest();
-                    return casted_SQ_Question.getQuestion();
-                } else if (Objects.equals(this.npc.getSideQuest().getType(), "OBJECT")) {
-                    SQ_Object casted_SQ_Object = (SQ_Object) this.npc.getSideQuest();
-                    return casted_SQ_Object.getQuestion();
-                }
-            }*/
+            }
         }
         return "I don't understand what are you saying";
     }
+    /**
+     * giveObject
+     * __________________________
+     * add object from NPC and remove the object into player's inventory
+     *
+     * @param player Player that is currently in the AdventureGame
+     * @param object AdventureObject that is given to the NPC
+     */
     public void giveObject(Player player, AdventureObject object){
         // add object from NPC inventory and
         // remove object to player's inventory
         this.objects.add(object);
         player.inventory.remove(object);
     }
+    /**
+     * takeObject
+     * ________________________
+     * remove object from NPC and add the object into player's inventory
+     *
+     * @param player Player that is currently in the AdventureGame
+     * @param object AdventureObject that is being taken away from NPC
+     */
     public void takeObject(Player player, AdventureObject object){
         // remove object from NPC inventory and
         // add object to player's inventory
@@ -89,10 +117,34 @@ public class NPCStateHasObject implements NPCState {
         }
         player.addToInventory(object);
     }
+
+    /**
+     * getActionList
+     * __________________________
+     * Getter method for actionList
+     *
+     * @return ArrayList that contains the actions available for the NPC
+     */
     public ArrayList<String> getActionList() {
         return NPCState.super.getActionList(); // may cause potential issue
     }
+
+    /**
+     * getNPCState
+     * __________________________
+     * Getter method for the state of the NPC
+     *
+     * @return String that represents the state of the NPC
+     */
     public String getNPCState() {return "NPCStateHasObject";}
+    /**
+     * giveReward
+     * __________________________
+     * give the reward of the side quest to the player
+     *
+     * @param player Player that is currently in the AdventureGame
+     * @param object String representation of the reward of the side quest
+     */
     public void giveReward(Player player, String object){
         for (AdventureObject obj: objects) {
             if (Objects.equals(obj.getName(), object)) {

@@ -9,7 +9,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
+/**
+ * Class SQFactory. Factory that generates SideQuest.
+ */
 public class SQFactory {
+    /**
+     * SQGenerator
+     * ______________________________
+     * Handles the side_quest.txt file to generate all the SideQuest.
+     *
+     * @param npcHashMap Hashmap of all the room numbers that corresponds to the location of the NPC
+     * @param buff BufferedReader that corresponds to the file of the side quest
+     * @throws IOException
+     */
     public void SQGenerator(HashMap<Integer, NPC> npcHashMap, BufferedReader buff) throws IOException {
         while (buff.ready()){
             String type = buff.readLine().substring(6);
