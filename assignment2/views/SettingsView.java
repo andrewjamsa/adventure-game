@@ -254,7 +254,7 @@ public class SettingsView {
                     break;
                 case "Comic Sans":
                     System.out.println("Selected Comic Sans");
-                    this.adventureGameView.setGameFont("Comic Sans");
+                    this.adventureGameView.setGameFont("Comic Sans MS");
                     break;
             }
         }
