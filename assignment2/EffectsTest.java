@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import AdventureModel.AdventureObject;
 import AdventureModel.Effects.*;
 
@@ -6,10 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
-
-import AdventureModel.AdventureGame;
-=======
->>>>>>> 47e89e43ccc0803ec63a2e66ea35e523dba5f02f
 import AdventureModel.AdventureObject;
 import AdventureModel.Effects.*;
 import AdventureModel.Player;
@@ -17,15 +12,11 @@ import AdventureModel.Room;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
-<<<<<<< HEAD
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
 
-=======
-
->>>>>>> 47e89e43ccc0803ec63a2e66ea35e523dba5f02f
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
