@@ -9,7 +9,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Class NPCFactory. Factory that generates NPCs.
+ */
 public class NPCFactory {
+    /**
+     * NPCGenerator
+     * _____________________________
+     * Handles the npc.txt file to generate all the NPCs.
+     *
+     * @param NPCbuff BufferedReader that corresponds to the file of the npc
+     * @param rooms Hashmap of all the room numbers with the corresponding rooms in the adventure game
+     * @return Hashmap of all the room numbers that corresponds to the location of the NPC
+     * @throws IOException
+     */
     public HashMap<Integer, NPC> NPCGenerator(BufferedReader NPCbuff, HashMap<Integer, Room> rooms) throws IOException {
         HashMap<Integer, NPC> npcHashMap = new HashMap<>();
         while (NPCbuff.ready()){
