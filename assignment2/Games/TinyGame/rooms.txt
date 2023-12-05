@@ -1,6 +1,6 @@
 1
 Outside building
-["damageEffect", 100]
+["multipleEffects", ["damageEffect", 100], ["unhideAllEffect"]]
 You are standing at the end of a road before a small brick building.  A small stream flows out of the building and down a gully to the south.  A road runs up a small hill to the west.
 -----
 WEST       2
@@ -21,7 +21,7 @@ DOWN       3
 
 3
 Inside building
-["randomEffect", ["damageEffect", 0], 3, ["giveItemEffect", "BOOK"], 1]
+["randomEffect", ["damageEffect", 0], 4, ["giveItemEffect", "BOOK"], 1]
 You are inside a building, a well house for a large spring. The exit door is to the south.  There is another room to the north, but the door is barred by a shimmering curtain. Maybe you can find something by searching the area.
 -----
 SOUTH      1

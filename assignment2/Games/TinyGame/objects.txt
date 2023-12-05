@@ -1,5 +1,5 @@
 BIRD
-["damageEffect", -3]
+["hideableEffect", ["damageEffect", -3]]
 a water bird
 1
 

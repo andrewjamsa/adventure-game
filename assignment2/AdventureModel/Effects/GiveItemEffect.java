@@ -19,11 +19,6 @@ public class GiveItemEffect implements EffectStrategy{
 
     @Override
     public String getDescription() {
-        if(!done)
-        {
-            return String.format("Gives you the item '%s'", object.getName());
-        }
-        return "Does nothing";
-
+        return String.format("Gives you the item '%s'", object.getName());
     }
 }
