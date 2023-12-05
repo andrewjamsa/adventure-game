@@ -88,6 +88,26 @@ public class NPC {
     public NPCState getState(){
         return this.state;
     }
+    /**
+     * getRoom
+     * ______________________
+     * Getter method for Room
+     *
+     * @return Room that corresponds to the location of the NPC
+     */
+    public Room getRoom(){
+        return this.room;
+    }
+    /**
+     * getName
+     * ______________________
+     * Getter method for State
+     *
+     * @return String that corresponds to the name of the NPC
+     */
+    public String getName(){
+        return this.name;
+    }
 
     /**
      * getMessage
