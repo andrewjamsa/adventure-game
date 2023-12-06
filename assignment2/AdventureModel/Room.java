@@ -1,5 +1,7 @@
 package AdventureModel;
 
+import AdventureModel.Effects.EffectStrategy;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -40,6 +42,13 @@ public class Room implements Serializable {
      */
     private boolean isVisited;
 
+    public NPC NPCAvailable;
+
+    /**
+     * Effect to be applied to player upon entering room
+     */
+    private EffectStrategy effect;
+
     /**
      * AdvGameRoom constructor.
      *
@@ -53,6 +62,7 @@ public class Room implements Serializable {
         this.roomDescription = roomDescription;
         this.adventureName = adventureName;
         this.isVisited = false;
+        this.NPCAvailable = null;
     }
 
 
@@ -160,7 +170,13 @@ public class Room implements Serializable {
      * @return: description of the room
      */
     public String getRoomDescription(){
-        return this.roomDescription.replace("\n", " ");
+        if (effect == null){
+            return this.roomDescription.replace("\n", " ");
+        }
+        else{
+            return String.format("%s Effect: %s", this.roomDescription.replace("\n", " "),
+                    this.effect.getDescription());
+        }
     }
 
 
@@ -193,5 +209,22 @@ public class Room implements Serializable {
         return this.motionTable;
     }
 
+    /**
+     * Sets the effect of the room
+     */
+    public void setEffect(EffectStrategy effect) {
+        this.effect = effect;
+    }
+
+    /**
+     * Do the effect of the room
+     * Does nothing if effect is not set
+     */
+    public void doEffect(Player player){
+        if(effect == null){
+            return;
+        }
+        this.effect.doEffect(player);
+    }
 
 }

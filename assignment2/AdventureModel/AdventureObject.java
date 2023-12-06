@@ -1,5 +1,7 @@
 package AdventureModel;
 
+import AdventureModel.Effects.EffectStrategy;
+
 import java.io.Serializable; //you will need this to save the game!
 
 /**
@@ -23,6 +25,11 @@ public class AdventureObject implements Serializable {
      * The location of the object.
      */
     private Room location = null;
+
+    /**
+     * The effect that is done to the player holding the object upon entering a new room
+     */
+    private EffectStrategy effect;
 
     /**
      * Adventure Object Constructor
@@ -54,7 +61,12 @@ public class AdventureObject implements Serializable {
      * @return description of the game
      */
     public String getDescription(){
-        return this.description;
+        if (effect == null){
+            return this.description;
+        }
+        else{
+            return String.format("%s Effect: %s", this.description, this.effect.getDescription());
+        }
     }
 
     /**
@@ -66,6 +78,35 @@ public class AdventureObject implements Serializable {
      */
     public Room getLocation(){
         return this.location;
+    }
+
+    /**
+     * This method sets the location the object is in
+     */
+    public void setLocation(Room location){
+        this.location = location;
+    }
+
+    /**
+     * Sets the effect of the object
+     */
+    public void setEffect(EffectStrategy effect) {
+        this.effect = effect;
+    }
+
+    public EffectStrategy getEffect(){
+        return effect;
+    }
+
+    /**
+     * Do the effect of the object
+     * Does nothing if effect is not set
+     */
+    public void doEffect(Player player){
+        if(effect == null){
+            return;
+        }
+        this.effect.doEffect(player);
     }
 
 }
